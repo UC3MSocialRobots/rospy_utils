@@ -156,6 +156,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
+find_package(rostest REQUIRED)
 catkin_add_nosetests(src/test/test_iter_utils.py)
 catkin_add_nosetests(src/test/test_func_utils.py)
 add_rostest(test/param_utils.test)
