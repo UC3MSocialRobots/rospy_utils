@@ -35,11 +35,13 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   #- ln -s $CI_SOURCE_PATH . # Link the repo we are testing to the new workspace
   #- cd ../
   # Install dependencies for source repos
-  - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
+  # - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
   - source /opt/ros/$ROS_DISTRO/setup.bash
 ###################################
 # command to install dependencies
 #install: "pip install -r requirements.txt"
 # command to run tests
-script: nosetests
+script: 
+  #- cd ~/ros/catkin_ws/src/rospy_utils
+  - nosetests
