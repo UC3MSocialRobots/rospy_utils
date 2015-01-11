@@ -1,0 +1,7 @@
+<launch>
+  <test test-name="TestParamUtils"
+        pkg="rospy_utils"
+        type="test_param_utils.py"
+        time-limit="30"/>
+</launch>
+
