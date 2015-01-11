@@ -1,0 +1,12 @@
+syntax: glob
+*.orig
+*.swp
+*.pyc
+*.DS_Store
+*~
+*.log
+.coverage
+nosetests.xml
+src/rospkg.egg-info
+syntax: regexp
+(target|build|dist)/.*
