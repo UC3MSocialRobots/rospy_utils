@@ -1,5 +1,7 @@
 # rospy_utils
 [![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
+[![Documentation Status](https://readthedocs.org/projects/rospy-utils/badge/?version=latest)](https://readthedocs.org/projects/rospy-utils/?badge=latest)
+
 
 A ROS package that contains several modules to work easier with rospy.
 
