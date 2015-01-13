@@ -49,4 +49,4 @@ script:
   - nosetests --with-coverage
   - coverage run --source=src/rospy_utils/ $(which nosetests)
 after_success:
-  coveralls
+  - coveralls
