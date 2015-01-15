@@ -50,5 +50,9 @@ class TestIterUtils(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    import rosunit
-    rosunit.unitrun(PKG, 'test_TestIterUtils', TestIterUtils)
+    # import rosunit
+    # rosunit.unitrun(PKG, 'test_TestIterUtils', TestIterUtils,
+    #                 coverage_packages=['rospy_utils.iter_utils'])
+    import rostest
+    rostest.rosrun(PKG, 'test_TestIterUtils', TestIterUtils,
+                   sysargs='--cov')
