@@ -40,6 +40,7 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
 # command to run tests
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
+  - catkin_make run_tests_rospy_utils
   - nosetests --with-coverage
   - coverage run --source=src/rospy_utils/ $(which nosetests)
 after_success:
