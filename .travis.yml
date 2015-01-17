@@ -41,7 +41,8 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
   - catkin_make run_tests_rospy_utils
-  - nosetests --with-coverage
+  - nosetests -v --with-coverage --cover-package=rospy_utils
   - coverage run --source=src/rospy_utils/ $(which nosetests)
+  - coverage report --include=*rospy_utils* --omit=*src/test/*
 after_success:
   - coveralls
