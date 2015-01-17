@@ -15,7 +15,7 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   - wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
   #- sudo apt-get install -y -qq ros-hydro-catkin ros-hydro-desktop
-   - sudo apt-get install -y -qq ros-hydro-catkin ros-hydro-ros-base
+  - sudo apt-get install -y -qq ros-hydro-catkin ros-hydro-ros-base
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
