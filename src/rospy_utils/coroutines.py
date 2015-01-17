@@ -28,6 +28,7 @@ ROS components.
 
 import rospy
 
+from collections import deque
 
 def coroutine(func):
     ''' A decorator function that takes care of starting a coroutine
@@ -67,18 +68,52 @@ def coroutine(func):
 
 
 @coroutine
-def buffer(target, max_items=30):
+def buffer(target, max_items):
+    ''' Accumulates items in a list to send it to target when len == max_items.
+        It clears the list after it is sent.
+    '''
     items = list()
     while True:
         items.append((yield))
         if len(items) == max_items:
             target.send(items)
-            del items[:]
+            del(items[:])
+
+
+@coroutine
+def sliding_window(size, target):
+    ''' Sends the last size recived elements to target.
+
+        Example
+        -------
+        >>> window = sliding_window(3, printer())
+        >>> for i in xrange(5):
+        >>>     window.send(i)
+        [0]
+        [0, 1]
+        [0, 1, 2]
+        [1, 2, 3]
+        [2, 3, 4]
+
+    '''
+    window = deque([], size)
+    while True:
+        window.append((yield))
+        target.send(list(window))
 
 
 @coroutine
 def transformer(f, target):
-    ''' Applies f to incoming data and sends the result to target coroutine'''
+    ''' Applies f to incoming data and sends the result to target coroutine
+
+        Example
+        -------
+        >>> t = transformer(lambda x: x+1, printer())
+        >>> t.send(1)
+        2
+        >>> t.send(10)
+        11
+    '''
     while True:
         msg = f((yield))
         target.send(msg)
@@ -94,7 +129,19 @@ def filter(pred, target):
         Params
         ------
         :pred: (callable) predicate used to filter incoming messages
-        :target: next coroutine in the pipeline'''
+        :target: next coroutine in the pipeline
+
+        Example
+        -------
+        >>> is_even = lambda x: x % 2 == 0
+        >>> evens = co.filter(is_even, co.printer())
+        >>> for i in xrange(5):
+        >>>     evens.send(i)
+        0
+        2
+        4
+
+    '''
     while True:
         msg = (yield)
         if pred(msg):
@@ -162,6 +209,15 @@ def publisher(topic, msg_type):
 
 @coroutine
 def logger(logger, prefix='', suffix=''):
+    ''' Calls logger on incoming data
+
+        Example
+        -------
+        >>> err_logger = logger(rospy.logerr, prefix="ERROR: " sufix="!!!")
+        >>> err_logger.send("This is an error message")
+        "ERROR: This is an error message!!!"
+
+    '''
     while True:
         string = str((yield))
         logger(''.join([prefix, string, suffix]))
@@ -169,16 +225,24 @@ def logger(logger, prefix='', suffix=''):
 
 @coroutine
 def printer():
+    ''' Prints incoming data.
+
+        Example
+        -------
+        >>> p = printer()
+        >>> p.send("Hello World!")
+        Hello World!
+    '''
     while True:
-        items = (yield)
-        print(items)
+        item = (yield)
+        print(item)
 
 
 ################################################################################
 ## Utilities
 ################################################################################
 
-def copipe(coroutines):
+def pipe(coroutines):
     ''' Chains several coroutines together '''
     cors = list(reversed(coroutines))
     ret = cors[0]()
