@@ -19,6 +19,7 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
+  - pip install decorator
   # Code coverage analysis, following instructions from: http://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/
   - pip install coveralls
 install: # Use this to install any prerequisites or dependencies necessary to run your build
