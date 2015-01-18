@@ -28,9 +28,10 @@ ROS components.
 
 import rospy
 from collections import deque
-from functools import wraps
+from decorator import decorator
 
 
+@decorator
 def coroutine(func):
     ''' A decorator function that takes care of starting a coroutine
         automatically on call.
@@ -56,7 +57,6 @@ def coroutine(func):
              Go right now to learn some Python magic tricks, litte bastard:
              http://dabeaz.com/coroutines
     '''
-    @wraps(func)
     def start(*args, **kwargs):
         cr = func(*args, **kwargs)
         cr.next()
@@ -168,9 +168,23 @@ def accumulator(binop, init_value, target):
         Applies binop to each received value and the previous result
         and sends the result to target
 
+        Params:
+        -------
+        :binop: binary operation to apply to each received message
+        :init_value: value used the first time the coroutine receives data
+        :target: destination coroutine where to send the accumulated results
+
         Example:
         -------
-        ToDo
+        >>> import operator as op
+        >>> mul = accumulator(op.mul, 1, printer())
+        >>> for _ in xrange(5):
+                mul.send(2)
+        2
+        4
+        8
+        16
+        32
 
         see reduce in the Python official documentation
     '''
