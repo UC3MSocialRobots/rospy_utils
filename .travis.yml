@@ -1,7 +1,7 @@
 language: python
 python:
   - "2.7"
-#  - "3.4"
+  - "3.4"
 # From https://github.com/Myzhar/RoboController-ROS/blob/master/.travis.yml 
 cache:
   - apt
@@ -40,7 +40,9 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
 # command to run tests
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
+  - cd ~/ros/catkin_ws/
   - catkin_make run_tests_rospy_utils
+  - cd ~/ros/catkin_ws/src
   - nosetests -v --with-coverage --cover-package=rospy_utils
   - coverage run --source=src/rospy_utils/ $(which nosetests)
   - coverage report --include=*rospy_utils* --omit=*src/test/*
