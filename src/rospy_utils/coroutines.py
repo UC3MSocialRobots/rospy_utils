@@ -27,8 +27,9 @@ ROS components.
 '''
 
 import rospy
-
 from collections import deque
+from functools import wraps
+
 
 def coroutine(func):
     ''' A decorator function that takes care of starting a coroutine
@@ -55,6 +56,7 @@ def coroutine(func):
              Go right now to learn some Python magic tricks, litte bastard:
              http://dabeaz.com/coroutines
     '''
+    @wraps(func)
     def start(*args, **kwargs):
         cr = func(*args, **kwargs)
         cr.next()
@@ -68,14 +70,14 @@ def coroutine(func):
 
 
 @coroutine
-def buffer(target, max_items):
-    ''' Accumulates items in a list to send it to target when len == max_items.
+def buffer(num_items, target):
+    ''' Accumulates items in a list to send it to target when len == num_items.
         It clears the list after it is sent.
     '''
     items = list()
     while True:
         items.append((yield))
-        if len(items) == max_items:
+        if len(items) == num_items:
             target.send(items)
             del(items[:])
 
@@ -134,7 +136,7 @@ def filter(pred, target):
         Example
         -------
         >>> is_even = lambda x: x % 2 == 0
-        >>> evens = co.filter(is_even, co.printer())
+        >>> evens = filter(is_even, printer())
         >>> for i in xrange(5):
         >>>     evens.send(i)
         0
@@ -216,7 +218,6 @@ def logger(logger, prefix='', suffix=''):
         >>> err_logger = logger(rospy.logerr, prefix="ERROR: " sufix="!!!")
         >>> err_logger.send("This is an error message")
         "ERROR: This is an error message!!!"
-
     '''
     while True:
         string = str((yield))
