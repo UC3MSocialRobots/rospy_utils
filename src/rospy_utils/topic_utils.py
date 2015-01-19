@@ -51,9 +51,8 @@ class TopicMapper():
                  out_topic, out_type, **kwargs):
         name = kwargs.get('node_name', 'mapper')
         rospy.init_node(name, anonymous=True)
-        self.node_name = rospy.get_name()
         rospy.on_shutdown(self.shutdown)
-        self.logger("Initializing " + self.node_name + " node...")
+        self.logger("Initializing " + rospy.get_name() + " node...")
 
         self.logger = kwargs.get('logger', rospy.loginfo)
 
