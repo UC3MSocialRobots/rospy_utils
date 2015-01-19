@@ -28,10 +28,11 @@ ROS components.
 
 import rospy
 from collections import deque
+from functools import wraps
 from decorator import decorator
 
 
-@decorator
+# @decorator
 def coroutine(func):
     ''' A decorator function that takes care of starting a coroutine
         automatically on call.
@@ -57,6 +58,7 @@ def coroutine(func):
              Go right now to learn some Python magic tricks, litte bastard:
              http://dabeaz.com/coroutines
     '''
+    @wraps(func)
     def start(*args, **kwargs):
         cr = func(*args, **kwargs)
         cr.next()
@@ -151,7 +153,25 @@ def filter(pred, target):
 
 
 @coroutine
-def splitter(pred, trues, falses):
+def splitter(*coroutines):
+    ''' Sends the data to the passed coroutines
+
+        Example
+        -------
+        >>> s = splitter([printer(), printer(), printer()])
+        >>> s.send('Hello')
+        'Hello'
+        'Hello'
+        'Hello'
+    '''
+    while True:
+        data = (yield)
+        for c in coroutines:
+            c.send(data)
+
+
+@coroutine
+def either(pred, trues, falses):
     ''' Splits an incoming message in two coroutintes according to a predicate
     '''
     while True:
@@ -185,8 +205,6 @@ def accumulator(binop, init_value, target):
         8
         16
         32
-
-        see reduce in the Python official documentation
     '''
     value = init_value
     while True:
@@ -229,7 +247,7 @@ def logger(logger, prefix='', suffix=''):
 
         Example
         -------
-        >>> err_logger = logger(rospy.logerr, prefix="ERROR: " sufix="!!!")
+        >>> err_logger = logger(rospy.logerr, prefix="ERROR: ", suffix="!!!")
         >>> err_logger.send("This is an error message")
         "ERROR: This is an error message!!!"
     '''
