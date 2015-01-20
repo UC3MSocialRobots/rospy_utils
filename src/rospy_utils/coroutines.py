@@ -29,7 +29,12 @@ ROS components.
 import rospy
 from collections import deque
 from functools import wraps
+
 from decorator import decorator
+
+
+class CoroutineNotConnected(Exception):
+    pass
 
 
 # @decorator
@@ -72,11 +77,15 @@ def coroutine(func):
 
 
 @coroutine
-def buffer(num_items, target):
+def buffer(num_items, target=None):
     ''' Accumulates items in a list to send it to target when len == num_items.
         It clears the list after it is sent.
+
+        If you do not specify the target, you will have to send it later.
     '''
     items = list()
+    if not target:
+        target = (yield)
     while True:
         items.append((yield))
         if len(items) == num_items:
@@ -85,7 +94,7 @@ def buffer(num_items, target):
 
 
 @coroutine
-def sliding_window(size, target):
+def sliding_window(size, target=None):
     ''' Sends the last size recived elements to target.
 
         Example
@@ -101,13 +110,15 @@ def sliding_window(size, target):
 
     '''
     window = deque([], size)
+    if not target:
+        target = (yield)
     while True:
         window.append((yield))
         target.send(list(window))
 
 
 @coroutine
-def transformer(f, target):
+def transformer(f, target=None):
     ''' Applies f to incoming data and sends the result to target coroutine
 
         Example
@@ -118,6 +129,8 @@ def transformer(f, target):
         >>> t.send(10)
         11
     '''
+    if not target:
+        target = (yield)
     while True:
         msg = f((yield))
         target.send(msg)
@@ -127,7 +140,7 @@ mapper = transformer   # alias
 
 
 @coroutine
-def filter(pred, target):
+def filter(pred, target=None):
     ''' Coroutine that filters its messages with pred function
 
         Params
@@ -146,6 +159,8 @@ def filter(pred, target):
         4
 
     '''
+    if not target:
+        target = (yield)
     while True:
         msg = (yield)
         if pred(msg):
@@ -164,6 +179,8 @@ def splitter(*coroutines):
         'Hello'
         'Hello'
     '''
+    if not coroutines:
+        coroutines = (yield)
     while True:
         data = (yield)
         for c in coroutines:
@@ -171,9 +188,12 @@ def splitter(*coroutines):
 
 
 @coroutine
-def either(pred, trues, falses):
+def either(pred, targets=(None, None)):
     ''' Splits an incoming message in two coroutintes according to a predicate
     '''
+    if not all(targets):
+        targets = (yield)
+    trues, falses = targets
     while True:
         msg = (yield)
         if pred(msg):
@@ -183,7 +203,7 @@ def either(pred, trues, falses):
 
 
 @coroutine
-def accumulator(binop, init_value, target):
+def accumulator(binop, init_value, target=None):
     ''' The reduce equivalent for coroutines:
         Applies binop to each received value and the previous result
         and sends the result to target
@@ -207,6 +227,8 @@ def accumulator(binop, init_value, target):
         32
     '''
     value = init_value
+    if not target:
+        target = (yield)
     while True:
         value = binop(value, (yield))
         target.send(value)
@@ -274,11 +296,24 @@ def printer():
 ################################################################################
 ## Utilities
 ################################################################################
-
 def pipe(coroutines):
-    ''' Chains several coroutines together '''
+    ''' Chains several coroutines together. Returns the first coroutine
+
+        Example
+        -------
+        >>> coroutines = (transformer(lambda x: x+1),
+                          filter(lambda x: x%2==0),
+                          printer())
+        >>> p = pipe(coroutines)
+        >>> p.send(1)
+        2
+        >>> p.send(4)    # No output
+
+        >>> p.send(-1)
+        0
+    '''
     cors = list(reversed(coroutines))
-    ret = cors[0]()
-    for c in cors[1:]:
-        ret = c(ret)
-    return ret
+    pairs = zip(cors[:], cors[1:])
+    for p in pairs:
+        p[1].send(p[0])
+    return coroutines[0]
