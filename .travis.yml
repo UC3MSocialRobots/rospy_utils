@@ -45,7 +45,7 @@ script:
   # - catkin_make run_tests_rospy_utils
   # - cd ~/ros/catkin_ws/src
   - pwd
-  - cd ..
+  - cd rospy_utils
   - python setup.py nosetests --with-coverage --cover-package=xylem > test_result
   - nosetests -v --with-coverage --cover-package=rospy_utils
   - coverage run --source=src/rospy_utils/ $(which nosetests)
