@@ -173,11 +173,13 @@ def splitter(*coroutines):
 
         Example
         -------
-        >>> s = splitter([printer(), printer(), printer()])
+        >>> s = splitter([printer(),
+                          printer(suffix='!!!'),
+                          printer(suffix='World')])
         >>> s.send('Hello')
         'Hello'
-        'Hello'
-        'Hello'
+        'Hello!!!'
+        'Hello World!'
     '''
     if not coroutines:
         coroutines = (yield)
@@ -189,7 +191,12 @@ def splitter(*coroutines):
 
 @coroutine
 def either(pred, targets=(None, None)):
-    ''' Splits an incoming message in two coroutintes according to a predicate
+    ''' Splits an incoming message in two coroutintes according to a predicate.
+
+        Example
+        -------
+
+
     '''
     if not all(targets):
         targets = (yield)
@@ -279,14 +286,17 @@ def logger(logger, prefix='', suffix=''):
 
 
 @coroutine
-def printer():
+def printer(prefix='', suffix=''):
     ''' Prints incoming data.
 
         Example
         -------
         >>> p = printer()
-        >>> p.send("Hello World!")
-        Hello World!
+        >>> p.send("Hello World")
+        'Hello World'
+        >>> p = printer(prefix='You said: ', suffix='!')
+        >>> p.send("Hello World")
+        'You said: Hello World"'
     '''
     while True:
         item = (yield)
@@ -298,6 +308,10 @@ def printer():
 ################################################################################
 def pipe(coroutines):
     ''' Chains several coroutines together. Returns the first coroutine
+        so you can send messages through the whole pipe.
+
+        Note: The pipe establishes the connections between coroutines,
+        therefore, you do not need to establish the targets.
 
         Example
         -------
@@ -311,6 +325,27 @@ def pipe(coroutines):
 
         >>> p.send(-1)
         0
+
+        Example
+        -------
+        coroutines = [co.sliding_window(3),
+                      co.transformer(np.mean),
+                      co.filter(lambda x: 0<= x <= 1),
+                      co.printer(prefix="Result: ")]
+
+        >>> pipe = co.pipe(coroutines)
+
+        >>> pipe.send(3)    # No output since mean <= 1
+        >>> pipe.send(1)    # No output since mean <= 1
+        >>> pipe.send(1)    # No output since mean <= 1
+        >>> pipe.send(1)
+        1.0
+        >>> pipe.send(1)
+        1.0
+        >>> pipe.send(0.1)
+        0.7
+        >>> pipe.send(0.1)
+        0.4
     '''
     cors = list(reversed(coroutines))
     pairs = zip(cors[:], cors[1:])
