@@ -51,7 +51,6 @@ def coroutine(func):
         >>>     line = (yield)
         >>>     if pattern in line:
         >>>         print line,
-
         >>> g = grep("python")
         >>> # Notice how you don't need a next() call here
         >>> g.send("Yeah, but no, but yeah, but no")
@@ -60,8 +59,8 @@ def coroutine(func):
 
         Unshamely taken from: http://dabeaz.com/coroutines/coroutine.py
         BTW: If you still didn't check out his great tutorials, on coroutines
-             Go right now to learn some Python magic tricks, litte bastard:
-             http://dabeaz.com/coroutines
+        Go right now to learn some Python magic tricks, litte bastard:
+        http://dabeaz.com/coroutines
     '''
     @wraps(func)
     def start(*args, **kwargs):
