@@ -1,0 +1,17 @@
+actions: []
+authors: Victor Gonzalez-Pacheco <victor.gonzalez.pacheco@gmail.com>
+brief: ''
+bugtracker: ''
+depends:
+- python-catkin-pkg
+- rostest
+- rospy
+- catkin
+description: Several Python modules that ease the use of rospy API
+license: LASR-UC3Mv.1
+maintainers: "V\xEDctor Gonz\xE1lez <victor.gonzalez.pacheco@gmail.com>"
+msgs: []
+package_type: package
+repo_url: ''
+srvs: []
+url: ''
