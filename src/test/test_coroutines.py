@@ -196,16 +196,56 @@ class TestCoroutines(unittest.TestCase):
 
     def test_accumulator(self):
         expected, tester = self.__setup_accumulator()
-        test_accumulator = co.accumulator(op.mul, 1, tester)
+        test_accumulator_coroutine = co.accumulator(op.mul, 1, tester)
         for _ in xrange(5):
-            test_accumulator.send(2)
+            test_accumulator_coroutine.send(2)
 
     def test_accumulator_curried(self):
         expected, tester = self.__setup_accumulator()
-        test_accumulator = co.accumulator(op.mul, 1)
-        test_accumulator.send(tester)
+        test_accumulator_coroutine = co.accumulator(op.mul, 1)
+        test_accumulator_coroutine.send(tester)
         for _ in xrange(5):
-            test_accumulator.send(2)
+            test_accumulator_coroutine.send(2)
+
+    # Test Dropwhile ###########################################################
+    def __setup_dropwhile(self):
+        data = (-1, 2, 0.2, 42, 0.1)
+        expected = [0.2, 42, 0.1]
+        tester = self.numeric_evaluator(expected)
+        return (data, expected, tester)
+
+    def test_dropwhile(self):
+        data, expected, tester = self.__setup_dropwhile()
+        dropwhile_coroutine = co.dropwhile(lambda x: 0 <= x <= 1, tester)
+        for i in data:
+            dropwhile_coroutine.send(i)
+
+    def test_dropwhile_curried(self):
+        data, expected, tester = self.__setup_dropwhile()
+        dropwhile_coroutine = co.dropwhile(lambda x: 0 <= x <= 1)
+        dropwhile_coroutine.send(tester)
+        for i in data:
+            dropwhile_coroutine.send(i)
+
+    # Test Takewhile ###########################################################
+    def __setup_takewhile(self):
+        data = [0.1, 0.5, 2, 0.2]
+        expected = [0.1, 0.5]
+        tester = self.numeric_evaluator(expected)
+        return (data, expected, tester)
+
+    def test_takewhile(self):
+        data, expected, tester = self.__setup_takewhile()
+        takewhile_coroutine = co.takewhile(lambda x: 0 <= x <= 1, tester)
+        for i in data:
+            takewhile_coroutine.send(i)
+
+    def test_takewhile_curried(self):
+        data, expected, tester = self.__setup_takewhile()
+        takewhile_coroutine = co.takewhile(lambda x: 0 <= x <= 1)
+        takewhile_coroutine.send(tester)
+        for i in data:
+            takewhile_coroutine.send(i)
 
     # Test Pipe ################################################################
     def test_pipe(self):

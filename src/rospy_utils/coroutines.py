@@ -234,12 +234,63 @@ def accumulator(binop, init_value, target=None):
         32
     '''
     value = init_value
-    if not target:
-        target = (yield)
+    # target = kwargs.get('target', (yield))
+    target = target or (yield)
+    # if not target:
+    #     target = (yield)
     while True:
         value = binop(value, (yield))
         target.send(value)
 
+
+@coroutine
+def dropwhile(pred, target=None):
+    ''' Drops received elements until pred is True.
+
+        Example:
+        --------
+        >>> tw = co.dropwhile(lambda x: 0 <= x <= 1, printer())
+        >>> tw.send(-1)     # Nothing is printed
+        >>> tw.send(2)      # Nothing is printed
+        >>> tw.send(0.2)
+        0.2
+        >>> tw.send(42)
+        42
+    '''
+    if not target:
+        target = (yield)
+    value = None
+    while not pred(value):
+        value = (yield)
+    target.send(value)
+    while True:
+        target.send((yield))
+
+
+@coroutine
+def takewhile(pred, target=None):
+    ''' Sends elements to target until pred returns False
+
+        Example:
+        --------
+        >>> tw = co.takewhile(lambda x: 0 <= x <= 1, printer())
+        >>> tw.send(0.1)
+        0.1
+        >>> tw.send(0.5)
+        0.5
+        >>> tw.send(2)      # Nothing is printed anymore
+        >>> tw.send(0.2)    # Nothing is printed
+    '''
+    if not target:
+        target = ((yield))
+    while True:
+        val = (yield)
+        if pred(val):
+            target.send(val)
+        else:
+            break
+    while True:
+        _ = (yield)
 
 ################################################################################
 # Consumer Coroutines (sinks in the data pipeline)
