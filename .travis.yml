@@ -26,15 +26,16 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   # Create workspace
   - mkdir -p ~/ros/catkin_ws/src
   - cd ~/ros/catkin_ws/src
-  #- wstool init .
+  - wstool init .
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
-  #- wstool update
+  - wstool update
   #- cd ../
   # Install dependencies for source repos
   # - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
   - source /opt/ros/$ROS_DISTRO/setup.bash
+  - export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/ros/catkin/src
 ###################################
 # command to install dependencies
 #install: "pip install -r requirements.txt"
