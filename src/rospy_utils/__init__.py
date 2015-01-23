@@ -4,4 +4,6 @@ from .iter_utils import *
 
 from .param_utils import *
 
-__version__ = '0.1.0'
+from .coroutines import *
+
+__version__ = '0.2.0'

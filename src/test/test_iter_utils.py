@@ -55,4 +55,4 @@ if __name__ == '__main__':
     #                 coverage_packages=['rospy_utils.iter_utils'])
     import rostest
     rostest.rosrun(PKG, 'test_TestIterUtils', TestIterUtils,
-                   sysargs='--cov')
+                   sysargs=['--cov'])
