@@ -25,17 +25,20 @@ before_install: # Use this to prepare the system to install prerequisites or dep
 install: # Use this to install any prerequisites or dependencies necessary to run your build
   # Create workspace
   - mkdir -p ~/ros/catkin_ws/src
-  - cd ~/ros/catkin_ws/src
-  - wstool init .
+  - cd ~/ros/catkin_ws/
+  - catkin_init_workspace
+  - source devel/setup.bash
+  # - wstool init .
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
-  - wstool update
+  # - wstool update
   #- cd ../
   # Install dependencies for source repos
   # - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
+  - catkin_make
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
-  - source /opt/ros/$ROS_DISTRO/setup.bash
-  - export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/ros/catkin/src
+  # - source /opt/ros/$ROS_DISTRO/setup.bash
+  
 ###################################
 # command to install dependencies
 #install: "pip install -r requirements.txt"
@@ -43,10 +46,10 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
   # - cd ~/ros/catkin_ws/
-  # - catkin_make run_tests_rospy_utils
+  - catkin_make run_tests_rospy_utils
   # - cd ~/ros/catkin_ws/src
   - pwd
-  - cd rospy_utils
+  - cd src/rospy_utils
   - python setup.py nosetests --with-coverage --cover-package=xylem > test_result
   - nosetests -v --with-coverage --cover-package=rospy_utils
   - coverage run --source=src/rospy_utils/ $(which nosetests)
