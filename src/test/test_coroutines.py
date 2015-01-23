@@ -80,6 +80,9 @@ class TestCoroutines(unittest.TestCase):
             # At the end of the loop, co.buffer should send all data
             # to self.evaluator who which will execute the assertion.
             test_buff.send(c)
+        # Do it again to ensure the buffer is flushed after sending all the data
+        for c in self.data:
+            test_buff.send(c)
 
     def test_buffer_curried(self):
         expected, tester = self.__setup_test_buffer()

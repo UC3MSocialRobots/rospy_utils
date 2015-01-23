@@ -81,6 +81,41 @@ def buffer(num_items, target=None):
         It clears the list after it is sent.
 
         If you do not specify the target, you will have to send it later.
+
+        Params
+        ------
+        :num_items: (int) Num of items to buffer before each
+
+        Optional Params
+        _______________
+        :target: The next coroutine to which the buffered data will be sent.
+                 Note that if you don't specify instantiate the coroutine
+                 specifying the ``target`` you'll have to send it later using
+                 ``buffer.send(target)`` method.
+
+        Example
+        -------
+        >>> buf = buffer(3, printer())
+        >>> buf.send(1)     # Nothing sent to printer coroutine
+        >>> buf.send(2)     # Still nothing sent
+        >>> buf.send(3)
+        [1, 2, 3]
+        >>> buff.send(4)
+        >>> buff.send(5)
+        >>> buff.send(6)
+        [4, 5, 6]
+
+
+        Note that you can call ``buffer`` withouth specifying the target.
+        If you don't specify the target, you'll have to send it manually:
+
+        >>> buf = buffer(3)
+        >>> buf.send(printer())     # First you send the target
+        >>> buf.send(1)             # And then you can send regular data
+        >>> buf.send(2)
+        >>> buf.send(3)
+        [1, 2, 3]
+
     '''
     items = list()
     if not target:
@@ -170,11 +205,29 @@ def filter(pred, target=None):
 def splitter(*coroutines):
     ''' Sends the data to the passed coroutines
 
+        Params
+        ------
+        :coroutines: coroutines at which the incoming data will be sent
+
         Example
         -------
-        >>> s = splitter([printer(),
-                          printer(suffix='!!!'),
-                          printer(suffix='World')])
+        >>> s = splitter(printer(),
+                         printer(suffix='!!!'),
+                         printer(suffix='World!'))
+        >>> s.send('Hello')
+        'Hello'
+        'Hello!!!'
+        'Hello World!'
+
+        If you do not specify the coroutines at coroutine instantiation, you'll
+        have to do it later by sending a ``tuple`` or a ``list`` using the
+        ``send`` method.
+
+        >>> s = splitter()   # You'll need to specify the coroutines later
+        >>> targets = [printer(),
+                       printer(suffix='!!!'),
+                       printer(suffix='World!')]
+        >>> s.send(targets)     # Now you can send regular data.
         >>> s.send('Hello')
         'Hello'
         'Hello!!!'
@@ -191,11 +244,38 @@ def splitter(*coroutines):
 @coroutine
 def either(pred, targets=(None, None)):
     ''' Splits an incoming message in two coroutintes according to a predicate.
+        The predicate will be evaluated against incoming data to decide to which
+        coroutine resend the incoming message.
+        If the predicate produces a ``True``, then the incoming message will be
+        sent to ``targets[0]``. If produces ``False`` it will be sent to
+        ``targets[1]``
+
+        Params:
+        -------
+        :pred: (callable) predicate that decides to which target send the data
+
+        Optional Params:
+        ----------------
+        :targets: (tuple) A pair of coroutines to send the data.
+                  If you don't instantiate the coroutine with this param,
+                  you will need to send the targets afterwards prior to start
+                  sending it data.
+
+        A possible use of this coroutine is to send data to loggers if some
+        preconditions fail:
 
         Example
         -------
-
-
+        >>> data_processor = transformer(lambda x: x**2, printer())
+        >>> error_logger = printer(prefix="ERROR: value too high!")
+        >>> ei = either(lambda x: x > 10)
+        >>> ei.send((data_processor, error_logger))
+        >>> ei.send(2)
+        4
+        >>> ei.send(12)
+        "ERROR: value too high!"
+        >>> ei.send(5)
+        25
     '''
     if not all(targets):
         targets = (yield)
@@ -372,19 +452,21 @@ def pipe(coroutines):
         >>> p.send(1)
         2
         >>> p.send(4)    # No output
-
         >>> p.send(-1)
         0
 
+
+        Here you can see a more useful example where we calculate the mean
+        of the last 3 received messages and print them on screen only if they
+        meet certain conditions:
+
         Example
         -------
-        coroutines = [co.sliding_window(3),
-                      co.transformer(np.mean),
-                      co.filter(lambda x: 0<= x <= 1),
-                      co.printer(prefix="Result: ")]
-
-        >>> pipe = co.pipe(coroutines)
-
+        >>> coroutines = [sliding_window(3),
+                          transformer(np.mean),
+                          filter(lambda x: 0<= x <= 1),
+                          printer(prefix="Result: ")]
+        >>> pipe = pipe(coroutines)
         >>> pipe.send(3)    # No output since mean <= 1
         >>> pipe.send(1)    # No output since mean <= 1
         >>> pipe.send(1)    # No output since mean <= 1
