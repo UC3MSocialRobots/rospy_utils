@@ -14,36 +14,30 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list'
   - wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
-  #- sudo apt-get install -y -qq ros-hydro-catkin ros-hydro-desktop
-  - sudo apt-get install -y -qq ros-hydro-catkin ros-hydro-ros-base
+install: # Use this to install any prerequisites or dependencies necessary to run your build
+  - sudo apt-get install -y -qq python-catkin-pkg python-rosdep python-wstool ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros-base
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
   - pip install decorator
-  # Code coverage analysis, following instructions from: http://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/
-  - pip install coveralls
-install: # Use this to install any prerequisites or dependencies necessary to run your build
-  # Create workspace
-  - mkdir -p ~/ros/catkin_ws/src
-  - cd ~/ros/catkin_ws/
-  - catkin_init_workspace
-  - catkin_make
-  - source devel/setup.bash
-  # - wstool init .
+  - pip install coveralls     # Code coverage analysis, see: http://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
-  # - wstool update
-  #- cd ../
-  # Install dependencies for source repos
-  # - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
-  
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
   # - source /opt/ros/$ROS_DISTRO/setup.bash
-  
-###################################
-# command to install dependencies
-#install: "pip install -r requirements.txt"
-# command to run tests
+  - export CI_SOURCE_PATH=$(pwd)
+  - export REPOSITORY_NAME=${PWD##*/}
+  - echo "Testing branch $TRAVIS_BRANCH of $REPOSITORY_NAME"
+  - source /opt/ros/$ROS_DISTRO/setup.bash
+  # Create workspace
+  - mkdir -p ~/ros/catkin_ws/src
+  - cd ~/ros/catkin_ws/src
+  - catkin_init_workspace
+  - ln -s $CI_SOURCE_PATH . # Link the repo we are testing to the new workspace
+  - cd ../
+  - export ROS_PARALLEL_JOBS='-j4 -l4' # Limit parallel jobs
+  - catkin_make
+  - source devel/setup.bash
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
   # - cd ~/ros/catkin_ws/
@@ -51,8 +45,8 @@ script:
   # - cd ~/ros/catkin_ws/src
   - pwd
   - cd src/rospy_utils
-  - python setup.py nosetests --with-coverage --cover-package=xylem > test_result
-  - nosetests -v --with-coverage --cover-package=rospy_utils
+  # - python setup.py nosetests --with-coverage --cover-package=xylem > test_result
+  - nosetests -v --with-coverage --cover-package=rospy_utils > test_result
   - coverage run --source=src/rospy_utils/ $(which nosetests)
   - coverage report --include=*rospy_utils* --omit=*src/test/*
 after_success:
