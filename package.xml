@@ -44,6 +44,7 @@
   <!--   <test_depend>gtest</test_depend> -->
   <depend>rospy</depend>
   <depend>rostest</depend>
+  <test_depend>rosunit</test_depend>
   <!-- <depend>rosunit</depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->
