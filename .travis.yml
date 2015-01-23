@@ -46,7 +46,8 @@ script:
   # - cd ~/ros/catkin_ws/src
   - pwd
   - cd src/rospy_utils
-  - nosetests -v --with-coverage --cover-package=rospy_utils > test_result
+  - nosetests -v
+  # - nosetests -v --with-coverage --cover-package=rospy_utils > test_result
   #- coverage run --source=src/rospy_utils/ $(which nosetests)
   #- coverage report --include=*rospy_utils* --omit=*src/test/*
 after_success:
