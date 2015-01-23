@@ -86,7 +86,7 @@ class ParamUtils_TestCase(unittest.TestCase):
 
     def test_get_parameters_raises_ParamNotFoundError_when_not_founds_it(self):
         bad_attrs = {'params': tuple((self.test_params[0].name,
-                                     'a/param/that/does/not/exist'))}
+                                      'a/param/that/does/not/exist'))}
         with self.assertRaises(pu.ParamNotFoundError):
             list(pu.get_parameters(bad_attrs))
 
@@ -125,6 +125,8 @@ class ParamUtils_TestCase(unittest.TestCase):
 if __name__ == '__main__':
     import rostest
     rostest.rosrun(PKG, 'test_param_utils', ParamUtils_TestCase,
-                   sysargs=['--cov'])
-    # import rosunit
-    # rosunit.unitrun(PKG, 'test_param_utils', ParamUtils_TestCase)
+                   # sysargs=['--cov'])
+                   sysargs=None)
+                       # import rosunit
+                       # rosunit.unitrun(PKG, 'test_param_utils',
+                       # ParamUtils_TestCase)
