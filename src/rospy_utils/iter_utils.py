@@ -19,8 +19,8 @@
 
 
 '''
-    @author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    @date: 2014-04
+    __author__ Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+    __date__ 2014-04
 
     Some utils to manipulate iterators
 '''
@@ -28,17 +28,22 @@
 
 def as_iter(obj):
     '''
-        Checks if an object is an interable. If not it encapuslates it in a tuple
-        @param obj: the object to check if is iterable
-        @return: obj if it is iterable, else (obj, )
+        If ``obj`` is no iterable, it encapuslates it in a tuple
 
-        Eg.:
+        Params:
 
-            >>> as_iter([1,2,3])
-            ... [1,2,3]
-            >>> as_iter(123)
-            ... (123,)
-            >>> as_iter('hello')
-            ... ('hello',)
+        :obj: the object to check if is iterable
+
+        Returns:
+        :obj: if it is iterable, else ``(obj, )``
+
+        Example:
+
+        >>> as_iter([1,2,3])
+        [1,2,3]
+        >>> as_iter(123)
+        (123,)
+        >>> as_iter('hello')
+        ('hello',)
     '''
     return obj if hasattr(obj, '__iter__') else (obj,)
