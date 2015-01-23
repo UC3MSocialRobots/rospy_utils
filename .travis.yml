@@ -21,6 +21,7 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   - rosdep update
   - pip install decorator
   - pip install coveralls     # Code coverage analysis, see: http://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/
+  - pip install catkin_pkg
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
