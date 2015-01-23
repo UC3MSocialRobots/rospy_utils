@@ -38,7 +38,7 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
   - cd ../
   - export ROS_PARALLEL_JOBS='-j4 -l4' # Limit parallel jobs
   - catkin_make
-  - source devel/setup.bash
+  # - source devel/setup.bash
 script: 
   # - cd ~/ros/catkin_ws/src/rospy_utils
   # - cd ~/ros/catkin_ws/
