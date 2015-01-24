@@ -21,7 +21,6 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
-  # - source /opt/ros/$ROS_DISTRO/setup.bash
   - export CI_SOURCE_PATH=$(pwd)
   - export REPOSITORY_NAME=${PWD##*/}
   - echo "Testing branch $TRAVIS_BRANCH of $REPOSITORY_NAME"
@@ -42,7 +41,7 @@ script:
   # - cd ~/ros/catkin_ws/src
   - pwd
   - cd src/rospy_utils
-  - nosetests -v
+  - nosetests -v --with-coverage --cover-package=rospy_utils
   # - nosetests -v --with-coverage --cover-package=rospy_utils > test_result
   #- coverage run --source=src/rospy_utils/ $(which nosetests)
   #- coverage report --include=*rospy_utils* --omit=*src/test/*
