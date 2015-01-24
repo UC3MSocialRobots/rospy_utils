@@ -8,9 +8,6 @@ cache:
 before_install: # Use this to prepare the system to install prerequisites or dependencies
   # Define some config vars
   - export ROS_DISTRO=hydro
-  #- export CI_SOURCE_PATH=$(pwd)
-  #- export REPOSITORY_NAME=${PWD##*/}
-  #- echo "Testing branch $TRAVIS_BRANCH of $REPOSITORY_NAME"
   - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list'
   - wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
@@ -20,8 +17,7 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   - sudo rosdep init
   - rosdep update
   - pip install decorator
-  - pip install coveralls     # Code coverage analysis, see: http://agiliq.com/blog/2014/05/continuous-integration-with-travis-and-coverallsio/
-  - pip install catkin_pkg rospkg
+  - pip install catkin_pkg rospkg coverage flake8 coveralls --upgrade
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
@@ -46,7 +42,7 @@ script:
   # - cd ~/ros/catkin_ws/src
   - pwd
   - cd src/rospy_utils
-  # - nosetests -v
+  - nosetests -v
   # - nosetests -v --with-coverage --cover-package=rospy_utils > test_result
   #- coverage run --source=src/rospy_utils/ $(which nosetests)
   #- coverage report --include=*rospy_utils* --omit=*src/test/*
