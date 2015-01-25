@@ -58,9 +58,9 @@ def error_handler(logger=None,  log_msg='',
     try:
         yield
     except errors as e:
-        e.message = ''.join([log_msg, e.message])
+        exception_msg = ''.join([log_msg, str(e)])
         if logger:
-            logger(e.message)
+            logger(str(exception_msg))
         if action:
             action(*action_args, **action_kwargs)
         if reraise:

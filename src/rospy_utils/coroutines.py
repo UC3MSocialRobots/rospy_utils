@@ -338,10 +338,11 @@ def dropwhile(pred, target=None):
     '''
     if not target:
         target = (yield)
-    value = None
-    while not pred(value):
+    while True:
         value = (yield)
-    target.send(value)
+        if not pred(value):
+            target.send(value)
+            break
     while True:
         target.send((yield))
 

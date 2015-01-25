@@ -20,8 +20,8 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 '''
-    @author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    @date: 2014-04
+    :author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+    :date: 2014-04
 
     Some utils to ease the use of loading parameters from ROS
 '''
@@ -30,9 +30,9 @@ roslib.load_manifest('rospy_utils')
 import rospy
 
 from collections import namedtuple
-from itertools import imap
+# from itertools import imap
 
-from iter_utils import as_iter
+from .iter_utils import as_iter
 
 ''' A struct defining a pair param_name, param_value'''
 Param = namedtuple('Param', 'name value')
@@ -76,14 +76,14 @@ def get_all_user_params():
     ''' Yields all the parameters loaded in the parameter server
         except the ones already loaded by the ROSMaster.
         Attributes:
-        :ns: The namespace where to look for.
+        :param ns: The namespace where to look for.
         Yields:
-        :param(param_full_name, param_value): A param'''
+        :return param(param_full_name, param_value): yields A param'''
 
     all_param_names = rospy.get_param_names()
 
     for pn in all_param_names:
-        if any(imap(pn.__contains__, MASTER_PARAMS)):
+        if any(map(pn.__contains__, MASTER_PARAMS)):
             continue        # skip parameters that are loaded by rosmaster
         pvalue = rospy.get_param(pn)
         yield Param(pn, pvalue)
@@ -131,12 +131,11 @@ def attach_parameters(obj, params, create_new=False):
             >>> rospy.set_param('p2', 'bye!')
             >>> my_obj = SomeClass(p='zzz')
             >>> print my_obj.p, my_obj.p2
-            ... 'zzz'
-            ... AttributeError: 'SomeClass' object has no attribute 'p2'
-            ...
+            'zzz'
+            AttributeError: 'SomeClass' object has no attribute 'p2'
             >>> my_obj = attach_parameters(my_obj, ['p', p2', create_new=True)
             >>> print my_obj.p, my_obj.p2
-            ... 'hi!', 'bye!
+            'hi!', 'bye!
 
     '''
     try:
