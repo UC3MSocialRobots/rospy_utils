@@ -1,5 +1,6 @@
 # rospy_utils
 [![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
+[![Code Health](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master/landscape.svg)](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master)
 [![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/rospy-utils/badge/?version=latest)](https://readthedocs.org/projects/rospy-utils/?badge=latest)
 
