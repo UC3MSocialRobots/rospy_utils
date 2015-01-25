@@ -6,6 +6,7 @@ syntax: glob
 *~
 *.log
 .coverage
+.tox
 nosetests.xml
 build
 src/rospkg.egg-info
