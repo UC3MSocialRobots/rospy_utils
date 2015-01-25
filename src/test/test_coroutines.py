@@ -27,6 +27,13 @@ from std_msgs.msg import String
 
 from rospy_utils import coroutines as co
 
+print_func = None
+try:
+    import __builtin__
+    print_func = '__builtin__.print'
+except:
+    print_func = 'builtins.print'
+
 # Utility functions
 inc = lambda x: x + 1
 is_even = lambda x: x % 2 == 0
@@ -62,7 +69,7 @@ class TestCoroutines(unittest.TestCase):
             self.assertAlmostEqual(next(expected), data)
 
     def setUp(self):
-        self.data = xrange(5)
+        self.data = range(5)
 
     def tearDown(self):
         pass
@@ -200,20 +207,20 @@ class TestCoroutines(unittest.TestCase):
     def test_accumulator(self):
         expected, tester = self.__setup_accumulator()
         test_accumulator_coroutine = co.accumulator(op.mul, 1, tester)
-        for _ in xrange(5):
+        for _ in range(5):
             test_accumulator_coroutine.send(2)
 
     def test_accumulator_curried(self):
         expected, tester = self.__setup_accumulator()
         test_accumulator_coroutine = co.accumulator(op.mul, 1)
         test_accumulator_coroutine.send(tester)
-        for _ in xrange(5):
+        for _ in range(5):
             test_accumulator_coroutine.send(2)
 
     # Test Dropwhile ###########################################################
     def __setup_dropwhile(self):
-        data = (-1, 2, 0.2, 42, 0.1)
-        expected = [0.2, 42, 0.1]
+        data = (0.2,  0.9, -1, 2, 0.2, 42, 0.1)
+        expected = [-1, 2, 0.2, 42, 0.1]
         tester = self.numeric_evaluator(expected)
         return (data, expected, tester)
 
@@ -286,7 +293,7 @@ class TestConsumerCoroutines(unittest.TestCase):
         err_logger.send("This is an error message")
         mock_loggerr.assert_called_with("ERROR: This is an error message!!!")
 
-    @patch('__builtin__.print')
+    @patch(print_func)
     def test_printer(self, mock_print):
         p = co.printer()
         p.send("Hello World!")

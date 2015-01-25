@@ -65,7 +65,7 @@ def coroutine(func):
     @wraps(func)
     def start(*args, **kwargs):
         cr = func(*args, **kwargs)
-        cr.next()
+        next(cr)
         return cr
     return start
 
@@ -338,10 +338,11 @@ def dropwhile(pred, target=None):
     '''
     if not target:
         target = (yield)
-    value = None
-    while not pred(value):
+    while True:
         value = (yield)
-    target.send(value)
+        if not pred(value):
+            target.send(value)
+            break
     while True:
         target.send((yield))
 
@@ -480,7 +481,7 @@ def pipe(coroutines):
         0.4
     '''
     cors = list(reversed(coroutines))
-    pairs = zip(cors[:], cors[1:])
+    pairs = list(zip(cors[:], cors[1:]))
     for p in pairs:
         p[1].send(p[0])
     return coroutines[0]
