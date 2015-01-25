@@ -1,0 +1,6 @@
+[run]
+omit =
+    src/rospy_utils/tests/test*
+    src/__init__.py
+    src/rospy_utils/param_utils.py
+    src/rospy_utils/topic_tools.py
