@@ -65,7 +65,7 @@ def coroutine(func):
     @wraps(func)
     def start(*args, **kwargs):
         cr = func(*args, **kwargs)
-        cr.next()
+        next(cr)
         return cr
     return start
 
@@ -480,7 +480,7 @@ def pipe(coroutines):
         0.4
     '''
     cors = list(reversed(coroutines))
-    pairs = zip(cors[:], cors[1:])
+    pairs = list(zip(cors[:], cors[1:]))
     for p in pairs:
         p[1].send(p[0])
     return coroutines[0]
