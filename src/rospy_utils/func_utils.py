@@ -37,8 +37,8 @@ class PreconditionError(Exception):
 
 
 @contextmanager
-def error_handler(logger=None,  log_msg='',
-                  action=None, action_args=[], action_kwargs={},
+def error_handler(logger=None, log_msg='',
+                  action=None, action_args=None, action_kwargs=None,
                   errors=Exception, reraise=False):
     ''' Context Manager that logs errors and executes an action if error occurs
 

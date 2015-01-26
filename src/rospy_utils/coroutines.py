@@ -431,7 +431,7 @@ def printer(prefix='', suffix=''):
     '''
     while True:
         item = (yield)
-        print(item)
+        print(''.join([prefix, item, suffix]))
 
 
 ###############################################################################
