@@ -49,12 +49,13 @@ class TopicMapper():
 
     def __init__(self, f, in_topic, in_type,
                  out_topic, out_type, **kwargs):
-        name = kwargs.get('node_name', 'mapper')
-        rospy.init_node(name, anonymous=True)
-        rospy.on_shutdown(self.shutdown)
-        self.logger("Initializing " + rospy.get_name() + " node...")
-
+        # name = kwargs.get('node_name', 'mapper')
         self.logger = kwargs.get('logger', rospy.loginfo)
+
+        # rospy.init_node(name, anonymous=True)
+        # rospy.on_shutdown(self.shutdown)
+
+        self.logger("Initializing " + rospy.get_name() + " node...")
 
         self.f = f
 
@@ -70,17 +71,19 @@ class TopicMapper():
         self.publisher.publish(out_msg)
 
     def run(self):
+        ''' Blocks and starts running the node '''
         rospy.spin()
 
-    def shutdown(self):
-        ''' Closes the node '''
-        self.logger('Shutting down ' + rospy.get_name() + ' node.')
+    # def shutdown(self):
+    #     ''' Closes the node '''
+    #     self.logger('Shutting down ' + rospy.get_name() + ' node.')
 
 
-if __name__ == '__main__':
-    try:
-        ''' :todo: pass arguments to node by argv to the file'''
-        node = TopicMapper()
-        node.run()
-    except rospy.ROSInterruptException:
-        pass
+# if __name__ == '__main__':
+#     try:
+        # ''' :todo: pass arguments to node by argv to the file'''
+#         rospy.myargv(argv=sys.argv)
+#         node = TopicMapper()
+#         node.run()
+#     except rospy.ROSInterruptException:
+#         pass
