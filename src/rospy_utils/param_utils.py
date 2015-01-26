@@ -110,7 +110,7 @@ def __attach_parameter(obj, param, create_new=False):
     pname = param.name.rsplit('/', 1)[-1]  # Get rid of param namespace
     if not hasattr(obj, pname) and not create_new:
         raise AttributeError("'{}' does not have attribute '{}'"
-                             .format(obj.__class__, pname, create_new))
+                             .format(obj.__class__, pname))
     setattr(obj, pname, param.value)
 
 
@@ -145,5 +145,5 @@ def attach_parameters(obj, params, create_new=False):
         return obj
     except ValueError:
         return obj
-    except:
+    except Exception:
         raise

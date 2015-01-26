@@ -25,7 +25,7 @@ import rospy
 # from rospy_utils.param_utils import(load_params)
 
 
-class TopicMapper():
+class TopicMapper(object):
 
     ''' Maps a function to a topic and applies that function to every
         incoming message received in that topic.
