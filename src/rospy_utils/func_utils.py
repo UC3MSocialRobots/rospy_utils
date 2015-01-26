@@ -47,7 +47,7 @@ def error_handler(logger=None,  log_msg='',
         @param log_msg: message to add to the logger in case of fail
                         (It will be preced to the exception message)
         @type log_msg: str
-        @param action: function to perform if an exception occurs. Default: None
+        @param action: function to call if an exception occurs. Default: None
         @type action: callable
         @param action_args: argument list to pass to action. Default:[]
         @param action_kwargs: argument keywords to pass to action. Default: {}

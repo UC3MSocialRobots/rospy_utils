@@ -70,9 +70,9 @@ def coroutine(func):
     return start
 
 
-################################################################################
+###############################################################################
 # Filter Coroutines (intermediate steps in the data pipeline)
-################################################################################
+###############################################################################
 
 
 @coroutine
@@ -244,7 +244,7 @@ def splitter(*coroutines):
 @coroutine
 def either(pred, targets=(None, None)):
     ''' Splits an incoming message in two coroutintes according to a predicate.
-        The predicate will be evaluated against incoming data to decide to which
+        The predicate is evaluated against incoming data to decide to which
         coroutine resend the incoming message.
         If the predicate produces a ``True``, then the incoming message will be
         sent to ``targets[0]``. If produces ``False`` it will be sent to
@@ -372,9 +372,9 @@ def takewhile(pred, target=None):
     while True:
         _ = (yield)
 
-################################################################################
+###############################################################################
 # Consumer Coroutines (sinks in the data pipeline)
-################################################################################
+###############################################################################
 
 
 @coroutine
@@ -434,9 +434,9 @@ def printer(prefix='', suffix=''):
         print(item)
 
 
-################################################################################
+###############################################################################
 ## Utilities
-################################################################################
+###############################################################################
 def pipe(coroutines):
     ''' Chains several coroutines together. Returns the first coroutine
         so you can send messages through the whole pipe.
