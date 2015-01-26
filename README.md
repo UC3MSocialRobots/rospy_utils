@@ -8,6 +8,7 @@ A ROS package that contains several modules to work easier with rospy.
 At its current version it contains 3 main modules:
 
 - `param_utils`: Utilities to work with ROS parameters
+- `coroutines`: Utilities to enable pipelining of data processing methods.
 - `func_utils`: Several generic functions 
 - `iter_utils`: Utilities to work with iterators
 
