@@ -1,0 +1,11 @@
+pyyaml
+numpy
+catkin_pkg
+rospkg
+coverage
+flake8
+coveralls
+mock
+nose
+nose-cov
+nose-cover3
