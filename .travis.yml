@@ -16,8 +16,9 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
-  - pip install decorator
+  # - pip install decorator
   - pip install catkin_pkg rospkg coverage flake8 coveralls nose nose-cov nose-cover3 --upgrade
+  - pip install scrutinizer-ocular   # Uploads code coverage data to scrutinizer-ci.com
   # Download non-debian stuff
   - git clone https://github.com/UC3MSocialRobots/rospy_utils.git
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
@@ -46,4 +47,5 @@ script:
   - coverage run --source=src/rospy_utils/ $(which nosetests)
   - coverage report --include=*rospy_utils* --omit=*src/test/*
 after_success:
-  - coveralls
+  - coveralls   # Send coverage data to coveralls
+  - ocular      # Send coverage data to scrutinizer-ci
