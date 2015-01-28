@@ -34,10 +34,6 @@ from functools import wraps
 # from decorator import decorator
 
 
-class CoroutineNotConnected(Exception):
-    pass
-
-
 # @decorator
 def coroutine(func):
     ''' A decorator function that takes care of starting a coroutine
@@ -65,6 +61,7 @@ def coroutine(func):
     '''
     @wraps(func)
     def start(*args, **kwargs):
+        ''' Coroutine wrapper that sets up the coroutine'''
         cr = func(*args, **kwargs)
         next(cr)
         return cr
