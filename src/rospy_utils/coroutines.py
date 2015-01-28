@@ -44,7 +44,7 @@ def coroutine(func):
         automatically on call.
 
         Example
-        -------
+
         >>> @coroutine
         >>> def grep(pattern):
         >>> print "Looking for %s" % pattern
@@ -83,19 +83,16 @@ def buffer(num_items, target=None):
 
         If you do not specify the target, you will have to send it later.
 
-        Params
-        ------
-        :num_items: (int) Num of items to buffer before each
 
-        Optional Params
-        _______________
-        :target: The next coroutine to which the buffered data will be sent.
-                 Note that if you don't specify instantiate the coroutine
-                 specifying the ``target`` you'll have to send it later using
-                 ``buffer.send(target)`` method.
+        :param int num_items: (int) Num of items to buffer before each
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
 
         Example
-        -------
+
         >>> buf = buffer(3, printer())
         >>> buf.send(1)     # Nothing sent to printer coroutine
         >>> buf.send(2)     # Still nothing sent
@@ -132,8 +129,16 @@ def buffer(num_items, target=None):
 def sliding_window(size, target=None):
     ''' Sends the last size recived elements to target.
 
+        :param int size: Size of the sliding window
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
+
+
         Example
-        -------
+
         >>> window = sliding_window(3, printer())
         >>> for i in xrange(5):
         >>>     window.send(i)
@@ -156,8 +161,15 @@ def sliding_window(size, target=None):
 def transformer(f, target=None):
     ''' Applies f to incoming data and sends the result to target coroutine
 
+        :param callable f: Function to apply to every incoming message
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
+
         Example
-        -------
+
         >>> t = transformer(lambda x: x+1, printer())
         >>> t.send(1)
         2
@@ -178,13 +190,16 @@ mapper = transformer   # alias
 def filter(pred, target=None):
     ''' Coroutine that filters its messages with pred function
 
-        Params
-        ------
-        :pred: (callable) predicate used to filter incoming messages
-        :target: next coroutine in the pipeline
+        :param callable pred: Predicate that evaluates every incoming message
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
+
 
         Example
-        -------
+
         >>> is_even = lambda x: x % 2 == 0
         >>> evens = filter(is_even, printer())
         >>> for i in xrange(5):
@@ -206,12 +221,9 @@ def filter(pred, target=None):
 def splitter(*coroutines):
     ''' Sends the data to the passed coroutines
 
-        Params
-        ------
-        :coroutines: coroutines at which the incoming data will be sent
+        :param coroutines: coroutines at which the incoming data will be sent
 
-        Example
-        -------
+        Example:
         >>> s = splitter(printer(),
                          printer(suffix='!!!'),
                          printer(suffix='World!'))
@@ -251,22 +263,18 @@ def either(pred, targets=(None, None)):
         sent to ``targets[0]``. If produces ``False`` it will be sent to
         ``targets[1]``
 
-        Params:
-        -------
-        :pred: (callable) predicate that decides to which target send the data
-
-        Optional Params:
-        ----------------
-        :targets: (tuple) A pair of coroutines to send the data.
+        :param callable pred: Predicate to decide to which target send the data
+        :param targets: A pair of coroutines to send the data.
                   If you don't instantiate the coroutine with this param,
                   you will need to send the targets afterwards prior to start
                   sending it data.
+        :type targets: tuple(coroutine, coroutine)
 
         A possible use of this coroutine is to send data to loggers if some
         preconditions fail:
 
         Example
-        -------
+
         >>> data_processor = transformer(lambda x: x**2, printer())
         >>> error_logger = printer(prefix="ERROR: value too high!")
         >>> ei = either(lambda x: x > 10)
@@ -295,14 +303,16 @@ def accumulator(binop, init_value, target=None):
         Applies binop to each received value and the previous result
         and sends the result to target
 
-        Params:
-        -------
-        :binop: binary operation to apply to each received message
-        :init_value: value used the first time the coroutine receives data
-        :target: destination coroutine where to send the accumulated results
+        :param callable binop: binary operation to apply to each received msg
+        :param init_value: value used the first time the coroutine receives data
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
 
         Example:
-        -------
+
         >>> import operator as op
         >>> mul = accumulator(op.mul, 1, printer())
         >>> for _ in xrange(5):
@@ -327,8 +337,15 @@ def accumulator(binop, init_value, target=None):
 def dropwhile(pred, target=None):
     ''' Drops received elements while pred is True.
 
+        :param callable pred: Predicate that evaluates incoming data
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
+
         Example:
-        --------
+
         >>> tw = dropwhile(lambda x: 0 <= x <= 1, printer())
         >>> tw.send(-1)     # Nothing is printed
         >>> tw.send(2)      # Nothing is printed
@@ -351,6 +368,13 @@ def dropwhile(pred, target=None):
 @coroutine
 def takewhile(pred, target=None):
     ''' Sends elements to target until pred returns False
+
+        :param callable pred: Predicate that evaluates incoming data
+        :param target: (default: None) Next coroutine in the data pipeline
+            Note that if you don't specify instantiate the coroutine
+            specifying the ``target`` you'll have to send it later using
+            ``buffer.send(target)`` method.
+        :type target: coroutine or None
 
         Example:
         --------
@@ -382,8 +406,6 @@ def takewhile(pred, target=None):
 def publisher(topic, msg_type):
     ''' A coroutine-based rospy.publisher
 
-        Params
-        ------
         :topic: (str) Name of the topic to publish
         :msg_type: type of the message to publish
 
@@ -403,11 +425,16 @@ def publisher(topic, msg_type):
 
 
 @coroutine
-def logger(logger, prefix='', suffix=''):
-    ''' Calls logger on incoming data
+def logger(logger_, prefix='', suffix=''):
+    ''' Calls logger_ on incoming data
+
+        :param callable logger_: Logger function that prints logging messages
+        :param str prefix: (Default: '') Prefix to append to incoming data.
+        :param str suffix: (Default: '') Suffix to append to incoming data.
+
 
         Example
-        -------
+
         >>> err_logger = logger(rospy.logerr, prefix="ERROR: ", suffix="!!!")
         >>> err_logger.send("This is an error message")
         "ERROR: This is an error message!!!"
@@ -415,7 +442,7 @@ def logger(logger, prefix='', suffix=''):
     while True:
         try:
             string = str((yield))
-            logger(''.join([prefix, string, suffix]))
+            logger_(''.join([prefix, string, suffix]))
         except StopIteration:
             pass
 
@@ -424,8 +451,11 @@ def logger(logger, prefix='', suffix=''):
 def printer(prefix='', suffix=''):
     ''' Prints incoming data.
 
+        :param str prefix: (Default: '') Prefix to append to incoming data.
+        :param str suffix: (Default: '') Suffix to append to incoming data.
+
         Example
-        -------
+
         >>> p = printer()
         >>> p.send("Hello World")
         'Hello World'
@@ -476,17 +506,19 @@ class PipedSubscriber(object):
 ## Utilities
 ###############################################################################
 def pipe(coroutines):
-    ''' Chains several coroutines together. Returns the first coroutine
-        so you can send messages through the whole pipe.
+    ''' Chains several coroutines together and returns the first coroutine
+        of the pipe so you can send messages through the whole pipe.
 
         Note: The pipe establishes the connections between coroutines,
         therefore, you do not need to establish the targets.
 
+        Params
         :param list coroutines: list of coroutines to pipe
         :return: The first coroutine of the pipe
+        :rtype: coroutine
 
         Example
-        -------
+
         >>> coroutines = (transformer(lambda x: x+1),
                           filter(lambda x: x%2==0),
                           printer())
@@ -503,7 +535,7 @@ def pipe(coroutines):
         meet certain conditions:
 
         Example
-        -------
+
         >>> coroutines = [sliding_window(3),
                           transformer(np.mean),
                           filter(lambda x: 0<= x <= 1),
