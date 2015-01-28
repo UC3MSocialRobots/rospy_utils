@@ -25,6 +25,7 @@
 Coroutines that ease the data manipulation and communication between
 ROS components.
 '''
+from __future__ import print_function
 
 import rospy
 from collections import deque
@@ -324,11 +325,11 @@ def accumulator(binop, init_value, target=None):
 
 @coroutine
 def dropwhile(pred, target=None):
-    ''' Drops received elements until pred is True.
+    ''' Drops received elements while pred is True.
 
         Example:
         --------
-        >>> tw = co.dropwhile(lambda x: 0 <= x <= 1, printer())
+        >>> tw = dropwhile(lambda x: 0 <= x <= 1, printer())
         >>> tw.send(-1)     # Nothing is printed
         >>> tw.send(2)      # Nothing is printed
         >>> tw.send(0.2)
@@ -353,7 +354,7 @@ def takewhile(pred, target=None):
 
         Example:
         --------
-        >>> tw = co.takewhile(lambda x: 0 <= x <= 1, printer())
+        >>> tw = takewhile(lambda x: 0 <= x <= 1, printer())
         >>> tw.send(0.1)
         0.1
         >>> tw.send(0.5)
@@ -412,8 +413,11 @@ def logger(logger, prefix='', suffix=''):
         "ERROR: This is an error message!!!"
     '''
     while True:
-        string = str((yield))
-        logger(''.join([prefix, string, suffix]))
+        try:
+            string = str((yield))
+            logger(''.join([prefix, string, suffix]))
+        except StopIteration:
+            pass
 
 
 @coroutine
@@ -430,8 +434,45 @@ def printer(prefix='', suffix=''):
         'You said: Hello World"'
     '''
     while True:
-        item = (yield)
-        print(''.join([prefix, item, suffix]))
+        try:
+            item = (yield)
+            print(''.join([prefix, item, suffix]))
+        except StopIteration:
+            pass
+
+
+###############################################################################
+## Data producers
+###############################################################################
+class PipedSubscriber(object):
+    ''' A wrapper of the `rospy.Subscriber` class that connects the Subscriber
+        directly with a coroutine (or a pipe) that processes the incoming msgs.
+
+        :param str topic_name: Name of the topic to Subscriber
+        :param type msg_type: Type of the messages of `topic_name`
+        :param generator target: The coroutine or
+            ..mod:pipe where the incoming messages will be sent
+
+        Here you can see an example of use:
+
+        >>> ### This node subscribes to the 'my_topic' topic,
+        >>> ### transforms incoming strings to uppercase and
+        >>> ### publishes them into rospy.logerr
+        >>> import rospy
+        >>> pipe = pipe([transformer(lambda x: str(x).upper()),
+                         logger(rospy.logwarn, prefix='Got: ')])
+        >>> rospy.init_node('my_node')
+        >>> rospy.loginfo("Node {} started".format(rospy.get_name()))
+        >>> PipedSubscriber('my_topic', String, pipe)
+        >>> rospy.spin()
+    '''
+    def __init__(self, topic_name, msg_type, target, *args, **kwargs):
+        self.target = target
+        # rospy.Subscriber(topic_name, msg_type, self.cb, *args, **kwargs)
+        rospy.Subscriber(topic_name, msg_type, target.send, *args, **kwargs)
+
+    def cb(self, msg):
+        self.target.send(msg)
 
 
 ###############################################################################
@@ -443,6 +484,9 @@ def pipe(coroutines):
 
         Note: The pipe establishes the connections between coroutines,
         therefore, you do not need to establish the targets.
+
+        :param list coroutines: list of coroutines to pipe
+        :return: The first coroutine of the pipe
 
         Example
         -------
