@@ -1,6 +1,0 @@
-<launch>
-  <test test-name="TestTopicUtils"
-        pkg="rospy_utils"
-        type="test_topic_utils.py"
-        time-limit="30"/>
-</launch>
