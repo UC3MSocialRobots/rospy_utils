@@ -371,7 +371,7 @@ def takewhile(pred, target=None):
         else:
             break
     while True:
-        _ = (yield)
+        (yield)
 
 ###############################################################################
 # Consumer Coroutines (sinks in the data pipeline)
@@ -447,6 +447,8 @@ def printer(prefix='', suffix=''):
 class PipedSubscriber(object):
     ''' A wrapper of the `rospy.Subscriber` class that connects the Subscriber
         directly with a coroutine (or a pipe) that processes the incoming msgs.
+        In short it has the same api as `rospy.subscriber` but, instead of a
+        callback you pass it a coroutine or a `pipe` to it.
 
         :param str topic_name: Name of the topic to Subscriber
         :param type msg_type: Type of the messages of `topic_name`
@@ -467,12 +469,7 @@ class PipedSubscriber(object):
         >>> rospy.spin()
     '''
     def __init__(self, topic_name, msg_type, target, *args, **kwargs):
-        self.target = target
-        # rospy.Subscriber(topic_name, msg_type, self.cb, *args, **kwargs)
         rospy.Subscriber(topic_name, msg_type, target.send, *args, **kwargs)
-
-    def cb(self, msg):
-        self.target.send(msg)
 
 
 ###############################################################################
