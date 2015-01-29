@@ -493,7 +493,7 @@ class PipedSubscriber(object):
         >>> rospy.init_node('my_node')
         >>> rospy.loginfo("Node {} started".format(rospy.get_name()))
         >>> PipedSubscriber('my_topic', String, pipe)
-        >>> rospy.spin()
+        >>> # rospy.spin()
     '''
     def __init__(self, topic_name, msg_type, target, *args, **kwargs):
         rospy.Subscriber(topic_name, msg_type, target.send, *args, **kwargs)
@@ -550,8 +550,8 @@ def pipe(coroutines):
         >>> pipe.send(0.1)
         0.4
     '''
-    cors = list(reversed(coroutines))
-    pairs = list(zip(cors[:], cors[1:]))
+    _coroutines = list(reversed(coroutines))
+    pairs = list(zip(_coroutines[:], _coroutines[1:]))
     for p in pairs:
         p[1].send(p[0])
     return coroutines[0]
