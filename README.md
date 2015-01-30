@@ -16,8 +16,6 @@ Future version will include another module that ease the programming of topic pu
 
 ## Installing instructions
 
-## External Dependencies:
-
 To install `rospy_utils`, you need to follow these steps:
 
     $ cd <your_catkin_ws_dir>/src
