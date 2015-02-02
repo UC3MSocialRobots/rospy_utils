@@ -8,11 +8,25 @@ A ROS package that contains several modules to work easier with rospy.
 At its current version it contains 3 main modules:
 
 - `param_utils`: Utilities to work with ROS parameters
-- `coroutines`: Utilities to enable pipelining of data processing methods.
 - `func_utils`: Several generic functions 
-- `iter_utils`: Utilities to work with iterators
+- `coroutines`: Utilities to enable pipelining of data processing methods.
 
 Future version will include another module that ease the programming of topic publishers and subscribers.
+
+## Installing instructions
+
+To install `rospy_utils`, you need to follow these steps:
+
+```bash
+$ cd <your_catkin_ws_dir>/src
+$ git clone https://github.com/UC3MSocialRobots/rospy_utils.git
+$ rospack profile
+$ roscd rospy_utils
+$ # Install dependencies of the package
+$ sudo pip install -r requirements.txt
+```
+You can also test it by runing `nosetests` or `tox` inside the `rospy_utils` dir.
+
 
 ## LICENSE:
 
