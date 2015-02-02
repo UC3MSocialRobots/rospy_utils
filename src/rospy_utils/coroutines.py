@@ -74,41 +74,41 @@ def coroutine(func):
 
 
 @coroutine
-def buffer(num_items, target=None):
+def accumulator(num_items, target=None):
     ''' Accumulates items in a list to send it to target when len == num_items.
         It clears the list after it is sent.
 
         If you do not specify the target, you will have to send it later.
 
 
-        :param int num_items: (int) Num of items to buffer before each
+        :param int num_items: (int) Num of items to accumulate before each
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``buffer.send(target)`` method.
+            ``accumulator.send(target)`` method.
         :type target: coroutine or None
 
         Example
 
-        >>> buf = buffer(3, printer())
-        >>> buf.send(1)     # Nothing sent to printer coroutine
-        >>> buf.send(2)     # Still nothing sent
-        >>> buf.send(3)
+        >>> accum = accumulator(3, printer())
+        >>> accum.send(1)     # Nothing sent to printer coroutine
+        >>> accum.send(2)     # Still nothing sent
+        >>> accum.send(3)
         [1, 2, 3]
-        >>> buff.send(4)
-        >>> buff.send(5)
-        >>> buff.send(6)
+        >>> accumf.send(4)
+        >>> accumf.send(5)
+        >>> accumf.send(6)
         [4, 5, 6]
 
 
-        Note that you can call ``buffer`` withouth specifying the target.
+        Note that you can call ``accumulator`` withouth specifying the target.
         If you don't specify the target, you'll have to send it manually:
 
-        >>> buf = buffer(3)
-        >>> buf.send(printer())     # First you send the target
-        >>> buf.send(1)             # And then you can send regular data
-        >>> buf.send(2)
-        >>> buf.send(3)
+        >>> accum = accumulator(3)
+        >>> accum.send(printer())     # First you send the target
+        >>> accum.send(1)             # And then you can send regular data
+        >>> accum.send(2)
+        >>> accum.send(3)
         [1, 2, 3]
 
     '''
@@ -130,7 +130,7 @@ def sliding_window(size, target=None):
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``buffer.send(target)`` method.
+            ``sliding_window.send(target)`` method.
         :type target: coroutine or None
 
 
@@ -162,7 +162,7 @@ def transformer(f, target=None):
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``buffer.send(target)`` method.
+            ``transformer.send(target)`` method.
         :type target: coroutine or None
 
         Example
@@ -191,7 +191,7 @@ def filter(pred, target=None):
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``buffer.send(target)`` method.
+            ``filter.send(target)`` method.
         :type target: coroutine or None
 
 
@@ -295,7 +295,7 @@ def either(pred, targets=(None, None)):
 
 
 @coroutine
-def accumulator(binop, init_value, target=None):
+def folder(binop, init_value, target=None):
     ''' The reduce equivalent for coroutines:
         Applies binop to each received value and the previous result
         and sends the result to target
@@ -305,13 +305,13 @@ def accumulator(binop, init_value, target=None):
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``buffer.send(target)`` method.
+            ``folder.send(target)`` method.
         :type target: coroutine or None
 
         Example:
 
         >>> import operator as op
-        >>> mul = accumulator(op.mul, 1, printer())
+        >>> mul = fold(op.mul, 1, printer())
         >>> for _ in xrange(5):
                 mul.send(2)
         2
@@ -321,8 +321,8 @@ def accumulator(binop, init_value, target=None):
         32
     '''
     value = init_value
-    # target = kwargs.get('target', (yield))
     target = target or (yield)
+    # target = kwargs.get('target', (yield))
     # if not target:
     #     target = (yield)
     while True:

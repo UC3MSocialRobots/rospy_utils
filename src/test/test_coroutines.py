@@ -74,31 +74,31 @@ class TestCoroutines(unittest.TestCase):
     def tearDown(self):
         pass
 
-    # Test Buffer ##############################################################
-    def __setup_test_buffer(self):
+    # Test Accumulator ########################################################
+    def __setup_test_accumulator(self):
         expected = list(self.data)
         tester = self.list_evaluator(expected)
         return (expected, tester)
 
-    def test_buffer(self):
-        expected, tester = self.__setup_test_buffer()
-        test_buff = co.buffer(len(self.data), tester)
+    def test_accumulator(self):
+        expected, tester = self.__setup_test_accumulator()
+        test_accum = co.accumulator(len(self.data), tester)
         for c in self.data:
-            # At the end of the loop, co.buffer should send all data
+            # At the end of the loop, co.accumulator should send all data
             # to self.evaluator who which will execute the assertion.
-            test_buff.send(c)
-        # Do it again to ensure the buffer is flushed after sending all the data
+            test_accum.send(c)
+        # Test again to ensure the accumulator clears after sending all the data
         for c in self.data:
-            test_buff.send(c)
+            test_accum.send(c)
 
-    def test_buffer_curried(self):
-        expected, tester = self.__setup_test_buffer()
-        test_buff = co.buffer(len(self.data))
-        test_buff.send(tester)
+    def test_accumulator_curried(self):
+        expected, tester = self.__setup_test_accumulator()
+        test_accum = co.accumulator(len(self.data))
+        test_accum.send(tester)
         for c in self.data:
-            # At the end of the loop, co.buffer should send all data
+            # At the end of the loop, co.accumulator should send all data
             # to self.evaluator who which will execute the assertion.
-            test_buff.send(c)
+            test_accum.send(c)
 
     # Test Sliding Window ######################################################
     def __setup_sliding_window(self):
@@ -198,24 +198,24 @@ class TestCoroutines(unittest.TestCase):
         for i in self.data:
             test_either.send(i)
 
-    # Test Accumulator #########################################################
-    def __setup_accumulator(self):
+    # Test Fold #########################################################
+    def __setup_folder(self):
         expected = [2, 4, 8, 16, 32]
         tester = self.item_evaluator(expected)
         return (expected, tester)
 
-    def test_accumulator(self):
-        expected, tester = self.__setup_accumulator()
-        test_accumulator_coroutine = co.accumulator(op.mul, 1, tester)
+    def test_folder(self):
+        expected, tester = self.__setup_folder()
+        test_folder_coroutine = co.folder(op.mul, 1, tester)
         for _ in range(5):
-            test_accumulator_coroutine.send(2)
+            test_folder_coroutine.send(2)
 
-    def test_accumulator_curried(self):
-        expected, tester = self.__setup_accumulator()
-        test_accumulator_coroutine = co.accumulator(op.mul, 1)
-        test_accumulator_coroutine.send(tester)
+    def test_folder_curried(self):
+        expected, tester = self.__setup_folder()
+        test_folder_coroutine = co.folder(op.mul, 1)
+        test_folder_coroutine.send(tester)
         for _ in range(5):
-            test_accumulator_coroutine.send(2)
+            test_folder_coroutine.send(2)
 
     # Test Dropwhile ###########################################################
     def __setup_dropwhile(self):
