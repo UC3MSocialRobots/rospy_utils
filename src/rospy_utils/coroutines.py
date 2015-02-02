@@ -184,21 +184,21 @@ mapper = transformer   # alias
 
 
 @coroutine
-def filter(pred, target=None):
-    ''' Coroutine that filters its messages with pred function
+def filterer(pred, target=None):
+    ''' Coroutine that Filters its messages with pred function
 
         :param callable pred: Predicate that evaluates every incoming message
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``filter.send(target)`` method.
+            ``Filterer.send(target)`` method.
         :type target: coroutine or None
 
 
         Example
 
         >>> is_even = lambda x: x % 2 == 0
-        >>> evens = filter(is_even, printer())
+        >>> evens = Filterer(is_even, printer())
         >>> for i in xrange(5):
         >>>     evens.send(i)
         0
@@ -517,7 +517,7 @@ def pipe(coroutines):
         Example
 
         >>> coroutines = (transformer(lambda x: x+1),
-                          filter(lambda x: x%2==0),
+                          Filterer(lambda x: x%2==0),
                           printer())
         >>> p = pipe(coroutines)
         >>> p.send(1)
@@ -535,7 +535,7 @@ def pipe(coroutines):
 
         >>> coroutines = [sliding_window(3),
                           transformer(np.mean),
-                          filter(lambda x: 0<= x <= 1),
+                          Filterer(lambda x: 0<= x <= 1),
                           printer(prefix="Result: ")]
         >>> pipe = pipe(coroutines)
         >>> pipe.send(3)    # No output since mean <= 1

@@ -139,23 +139,23 @@ class TestCoroutines(unittest.TestCase):
             test_transformer.send(i)
 
     # Test Filter ##############################################################
-    def __setup_filter(self):
+    def __setup_filterer(self):
         expected = filter(is_even, self.data)
         tester = self.item_evaluator(expected)
         return (expected, tester)
 
-    def test_filter(self):
-        expected, tester = self.__setup_filter()
-        test_filter = co.filter(is_even, tester)
+    def test_filterer(self):
+        expected, tester = self.__setup_filterer()
+        test_filterer = co.filterer(is_even, tester)
         for i in self.data:
-            test_filter.send(i)
+            test_filterer.send(i)
 
-    def test_filter_curried(self):
-        expected, tester = self.__setup_filter()
-        test_filter = co.filter(is_even)
-        test_filter.send(tester)
+    def test_filterer_curried(self):
+        expected, tester = self.__setup_filterer()
+        test_filterer = co.filterer(is_even)
+        test_filterer.send(tester)
         for i in self.data:
-            test_filter.send(i)
+            test_filterer.send(i)
 
     # Test Splitter ############################################################
     def __setup_splitter(self):
@@ -264,7 +264,7 @@ class TestCoroutines(unittest.TestCase):
         tester = self.numeric_evaluator(expected)
         coroutines = [co.sliding_window(3),
                       co.transformer(np.mean),
-                      co.filter(lambda x: 0 <= x <= 1),
+                      co.filterer(lambda x: 0 <= x <= 1),
                       tester]
         pipe_tester = co.pipe(coroutines)
         for d in data:
