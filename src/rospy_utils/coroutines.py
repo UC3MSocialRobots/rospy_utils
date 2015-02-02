@@ -191,14 +191,14 @@ def filterer(pred, target=None):
         :param target: (default: None) Next coroutine in the data pipeline
             Note that if you don't specify instantiate the coroutine
             specifying the ``target`` you'll have to send it later using
-            ``Filterer.send(target)`` method.
+            ``filterer.send(target)`` method.
         :type target: coroutine or None
 
 
         Example
 
         >>> is_even = lambda x: x % 2 == 0
-        >>> evens = Filterer(is_even, printer())
+        >>> evens = filterer(is_even, printer())
         >>> for i in xrange(5):
         >>>     evens.send(i)
         0
@@ -517,7 +517,7 @@ def pipe(coroutines):
         Example
 
         >>> coroutines = (transformer(lambda x: x+1),
-                          Filterer(lambda x: x%2==0),
+                          filterer(lambda x: x%2==0),
                           printer())
         >>> p = pipe(coroutines)
         >>> p.send(1)
@@ -535,7 +535,7 @@ def pipe(coroutines):
 
         >>> coroutines = [sliding_window(3),
                           transformer(np.mean),
-                          Filterer(lambda x: 0<= x <= 1),
+                          filterer(lambda x: 0<= x <= 1),
                           printer(prefix="Result: ")]
         >>> pipe = pipe(coroutines)
         >>> pipe.send(3)    # No output since mean <= 1
