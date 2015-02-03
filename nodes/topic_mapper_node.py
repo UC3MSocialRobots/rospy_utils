@@ -28,6 +28,7 @@
 
 import roslib
 roslib.load_manifest('monarch_multimodal_fusion')
+import sys
 import argparse
 import rospy
 
@@ -35,7 +36,7 @@ import rospy_utils as rpyu
 from rospy_utils import coroutines as co
 
 
-def parse_arguments():
+def parse_arguments(args):
     '''Parses all the arguments'''
 
     parser = argparse.ArgumentParser(
@@ -57,7 +58,7 @@ def parse_arguments():
                         help="Message type of the output topic. "
                              "Example: 'std_msgs/String'")
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     return args.func, args.in_topic, args.in_type, args.out_topic, args.out_type
 
 
@@ -83,7 +84,8 @@ if __name__ == '__main__':
     # TODO: This is highly replicable for filter_node, accumulator, etc.
     #       At some point I will separate all the repeteable parts to a class
 
-    f, in_topic, in_typename, out_topic, out_typename = parse_arguments()
+    my_args = rospy.myargv(sys.argv)[1:]
+    f, in_topic, in_typename, out_topic, out_typename = parse_arguments(my_args)
     func = rpyu.load_class(f)
     in_type = get_msg_type(in_typename)
     out_type = get_msg_type(out_typename)

@@ -11,5 +11,5 @@
           type="topic_mapper_node.py"
           respawn="true"
           output="screen"
-          args="str mapper_input std_msgs/Int32 mapper_output std_msgs/String"/>
+          args="__builtin__.str mapper_input std_msgs/Int32 mapper_output std_msgs/String"/>
 </launch>

@@ -38,8 +38,8 @@ class TestTopicMapperNode(unittest.TestCase):
         super(TestTopicMapperNode, self).__init__(*args)
         rospy.init_node(NNAME)
         # Publishers and Subscribers
+        self.publisher = rospy.Publisher('mapper_input', Int32, latch=True)
         rospy.Subscriber('mapper_output', String, self.callback)
-        self.publisher = rospy.Publisher('mapper_input', Int32)
 
     def setUp(self):
         self.data = None
@@ -51,7 +51,7 @@ class TestTopicMapperNode(unittest.TestCase):
 
     def callback(self, msg):
         self.data = msg.data
-        self.assertEqual('42', msg.data)
+        # self.assertEqual('42', msg.data)
 
     def test_get_msg_type_returns_correct_msg_type(self):
         self.assertEqual(type(String()), type(self.a_string))
@@ -61,7 +61,8 @@ class TestTopicMapperNode(unittest.TestCase):
 
     def test_topic_mapper(self):
         self.publisher.publish(42)
-        self.assertEqual('42', self.data)
+        rospy.sleep(0.25)
+        self.assertEqual('data: 42', self.data)
 
 
 if __name__ == '__main__':
