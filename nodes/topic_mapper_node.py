@@ -19,11 +19,11 @@
 
 '''This node is a mapper that applies a function to every incoming message
    and sends the output of that function to a topic
-                    ________
-               x    |      |   f(x)
-   in_topic ------> | f(x) | -------> out_topic
-                    |      |
-                    --------
+                    _________
+               x    |       |   f(x)
+   in_topic ------> |   f   | -------> out_topic
+                    |       |
+                    ---------
 '''
 
 import roslib
@@ -70,6 +70,7 @@ def get_msg_type(msg_typename):
         :rtype: type
 
         Example:
+
         >>> msg = get_msg_type("std_msgs/String")
         >>> msg(data='Hello World!')
         data: Hello World!

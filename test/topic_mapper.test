@@ -1,0 +1,15 @@
+<launch>
+  <!-- Separate group to prevent node naming collisions -->
+  <test test-name="test_topic_mapper_node"
+        pkg="rospy_utils"
+        type="test_topic_mapper_node.py"
+        time-limit="20.0"/>
+  
+  <!-- Nodes needed by tests -->
+    <node name="topic_mapper" 
+          pkg="rospy_utils"
+          type="topic_mapper_node.py"
+          respawn="true"
+          output="screen"
+          args="str mapper_input std_msgs/Int32 mapper_output std_msgs/String"/>
+</launch>
