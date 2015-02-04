@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Example of a launcher for a topic_mapper node.
+     For mor information try to run the node using rosrun
+     $ rosrun rospy_utils topic_mapper_node -h -->
+
+<launch>
+  <arg name="nodename"/>
+  <arg name="func"/>   
+  <arg name="in_topic"/>
+  <arg name="in_type" />
+  <arg name="out_topic"/>
+  <arg name="out_type"/>
+  
+  <node name="$(arg nodename)"
+        pkg="rospy_utils"
+        type="topic_mapper_node.py"
+        args="$(arg func) $(arg in_topic) $(arg in_type) $(arg out_topic) $(arg out_type)"
+        output="screen"/>
+</launch>
