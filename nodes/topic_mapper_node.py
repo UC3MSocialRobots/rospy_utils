@@ -17,14 +17,15 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-'''This node is a mapper that applies a function to every incoming message
-   and sends the output of that function to a topic
+"""Applies a function to incoming messages and sends the output ot other topic
+
+   Here is a diagram of the node:
                     _________
                x    |       |   f(x)
    in_topic ------> |   f   | -------> out_topic
                     |       |
                     ---------
-'''
+"""
 
 import roslib
 roslib.load_manifest('monarch_multimodal_fusion')
@@ -37,7 +38,7 @@ from rospy_utils import coroutines as co
 
 
 def parse_arguments(args):
-    '''Parses all the arguments'''
+    """Parses all the arguments"""
 
     parser = argparse.ArgumentParser(
         description="Creates a node that applies a function " +
@@ -63,7 +64,7 @@ def parse_arguments(args):
 
 
 def get_msg_type(msg_typename):
-    ''' Translates from a message typename to a message actual type
+    """ Translates from a message typename to a message actual type
 
         :param str msg_typename: The typename of the msg.
             Example: 'std_msgs/String'
@@ -75,7 +76,7 @@ def get_msg_type(msg_typename):
         >>> msg = get_msg_type("std_msgs/String")
         >>> msg(data='Hello World!')
         data: Hello World!
-    '''
+    """
     msg_package, msg_name = msg_typename.split('/')
     msg_full_typename = '.'.join([msg_package, 'msg', msg_name])
     return rpyu.load_class(msg_full_typename)

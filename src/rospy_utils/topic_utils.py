@@ -17,14 +17,7 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-"""Applies a function to incoming messages and sends the output ot other topic
-
-   Here is a diagram of the node:
-                    _________
-               x    |       |   f(x)
-   in_topic ------> |   f   | -------> out_topic
-                    |       |
-                    ---------
+""" Some utilities to ease the subscription and publication of ros topics
 """
 
 import roslib
