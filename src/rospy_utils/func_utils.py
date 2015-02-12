@@ -18,12 +18,12 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 
-'''
-    @author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    @date: 2014-04
+"""
+    :author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+    :date: 2014-04
 
     Utils to ease the use of functions and methods in python
-'''
+"""
 
 from functools import wraps
 from contextlib import contextmanager
@@ -31,8 +31,8 @@ from contextlib import contextmanager
 
 class PreconditionError(Exception):
 
-    ''' Exception that shuold be raised when the preconditions of a function
-        are not met '''
+    """ Exception that shuold be raised when the preconditions of a function
+        are not met """
     pass
 
 
@@ -40,7 +40,7 @@ class PreconditionError(Exception):
 def error_handler(logger=None, log_msg='',
                   action=None, action_args=None, action_kwargs=None,
                   errors=Exception, reraise=False):
-    ''' Context Manager that logs errors and executes an action if error occurs
+    """ Context Manager that logs errors and executes an action if error occurs
 
         @param logger: logging function. Default: None
         @type logger: callable
@@ -54,7 +54,7 @@ def error_handler(logger=None, log_msg='',
         @param errors: exceptions to catch. Default: Exception
         @type errors: Exception or a list of Exceptions
         @param reraise: (default: False) Wether to reraise precondition errors
-    '''
+    """
     try:
         yield
     except errors as e:
@@ -69,7 +69,7 @@ def error_handler(logger=None, log_msg='',
 
 def preconditions(precons, logger=None, log_msg='', errors=PreconditionError,
                   reraise=True):
-    '''
+    """
         Decorator that binds precondition checking to a function.
 
         @param precons: Preconditions to check
@@ -87,7 +87,7 @@ def preconditions(precons, logger=None, log_msg='', errors=PreconditionError,
         @param reraise: (default: True) Wether to reraise precondition errors
 
         @return: None if reraise is false and preconditions do not pass
-    '''
+    """
     def decor(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
@@ -101,7 +101,7 @@ def preconditions(precons, logger=None, log_msg='', errors=PreconditionError,
 
 
 def load_class(full_name):
-    '''
+    """
         Returns an builder of a Python class from its qualified full name.
         To build the object of that class, simply call the returned object.
 
@@ -121,7 +121,7 @@ def load_class(full_name):
         >>> my_class()
         ... 'klass instantiated'
 
-    '''
+    """
     module_name, klass_name = full_name.rsplit('.', 1)
     mod = __import__(module_name, fromlist=[klass_name])
     klass = getattr(mod, klass_name)

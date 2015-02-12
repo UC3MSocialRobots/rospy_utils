@@ -17,14 +17,14 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-'''
+"""
 :author: Victor Gonzalez ()
 :maintainer: Victor Gonzalez
 :version: 0.1
 
 Coroutines that ease the data manipulation and communication between
 ROS components.
-'''
+"""
 from __future__ import print_function
 
 import rospy
@@ -36,7 +36,7 @@ from functools import wraps
 
 # @decorator
 def coroutine(func):
-    ''' A decorator function that takes care of starting a coroutine
+    """ A decorator function that takes care of starting a coroutine
         automatically on call.
 
         Example
@@ -58,10 +58,10 @@ def coroutine(func):
         BTW: If you still didn't check out his great tutorials, on coroutines
         Go right now to learn some Python magic tricks, litte bastard:
         http://dabeaz.com/coroutines
-    '''
+    """
     @wraps(func)
     def start(*args, **kwargs):
-        ''' Coroutine wrapper that sets up the coroutine'''
+        """ Coroutine wrapper that sets up the coroutine"""
         cr = func(*args, **kwargs)
         next(cr)
         return cr
@@ -75,7 +75,7 @@ def coroutine(func):
 
 @coroutine
 def accumulator(num_items, target=None):
-    ''' Accumulates items in a list to send it to target when len == num_items.
+    """ Accumulates items in a list to send it to target when len == num_items.
         It clears the list after it is sent.
 
         If you do not specify the target, you will have to send it later.
@@ -111,7 +111,7 @@ def accumulator(num_items, target=None):
         >>> accum.send(3)
         [1, 2, 3]
 
-    '''
+    """
     items = list()
     if not target:
         target = (yield)
@@ -124,7 +124,7 @@ def accumulator(num_items, target=None):
 
 @coroutine
 def sliding_window(size, target=None):
-    ''' Sends the last size recived elements to target.
+    """ Sends the last size recived elements to target.
 
         :param int size: Size of the sliding window
         :param target: (default: None) Next coroutine in the data pipeline
@@ -145,7 +145,7 @@ def sliding_window(size, target=None):
         [1, 2, 3]
         [2, 3, 4]
 
-    '''
+    """
     window = deque([], size)
     if not target:
         target = (yield)
@@ -156,7 +156,7 @@ def sliding_window(size, target=None):
 
 @coroutine
 def transformer(f, target=None):
-    ''' Applies f to incoming data and sends the result to target coroutine
+    """ Applies f to incoming data and sends the result to target coroutine
 
         :param callable f: Function to apply to every incoming message
         :param target: (default: None) Next coroutine in the data pipeline
@@ -172,7 +172,7 @@ def transformer(f, target=None):
         2
         >>> t.send(10)
         11
-    '''
+    """
     if not target:
         target = (yield)
     while True:
@@ -185,7 +185,7 @@ mapper = transformer   # alias
 
 @coroutine
 def filterer(pred, target=None):
-    ''' Coroutine that Filters its messages with pred function
+    """ Coroutine that Filters its messages with pred function
 
         :param callable pred: Predicate that evaluates every incoming message
         :param target: (default: None) Next coroutine in the data pipeline
@@ -205,7 +205,7 @@ def filterer(pred, target=None):
         2
         4
 
-    '''
+    """
     if not target:
         target = (yield)
     while True:
@@ -216,7 +216,7 @@ def filterer(pred, target=None):
 
 @coroutine
 def splitter(*coroutines):
-    ''' Sends the data to the passed coroutines
+    """ Sends the data to the passed coroutines
 
         :param coroutines: coroutines at which the incoming data will be sent
 
@@ -242,7 +242,7 @@ def splitter(*coroutines):
         'Hello'
         'Hello!!!'
         'Hello World!'
-    '''
+    """
     if not coroutines:
         coroutines = (yield)
     while True:
@@ -253,7 +253,7 @@ def splitter(*coroutines):
 
 @coroutine
 def either(pred, targets=(None, None)):
-    ''' Splits an incoming message in two coroutintes according to a predicate.
+    """ Splits an incoming message in two coroutintes according to a predicate.
         The predicate is evaluated against incoming data to decide to which
         coroutine resend the incoming message.
         If the predicate produces a ``True``, then the incoming message will be
@@ -282,7 +282,7 @@ def either(pred, targets=(None, None)):
         "ERROR: value too high!"
         >>> ei.send(5)
         25
-    '''
+    """
     if not all(targets):
         targets = (yield)
     trues, falses = targets
@@ -296,7 +296,7 @@ def either(pred, targets=(None, None)):
 
 @coroutine
 def folder(binop, init_value, target=None):
-    ''' The reduce equivalent for coroutines:
+    """ The reduce equivalent for coroutines:
         Applies binop to each received value and the previous result
         and sends the result to target
 
@@ -319,7 +319,7 @@ def folder(binop, init_value, target=None):
         8
         16
         32
-    '''
+    """
     value = init_value
     target = target or (yield)
     # target = kwargs.get('target', (yield))
@@ -332,7 +332,7 @@ def folder(binop, init_value, target=None):
 
 @coroutine
 def dropwhile(pred, target=None):
-    ''' Drops received elements while pred is True.
+    """ Drops received elements while pred is True.
 
         :param callable pred: Predicate that evaluates incoming data
         :param target: (default: None) Next coroutine in the data pipeline
@@ -350,7 +350,7 @@ def dropwhile(pred, target=None):
         0.2
         >>> tw.send(42)
         42
-    '''
+    """
     if not target:
         target = (yield)
     while True:
@@ -364,7 +364,7 @@ def dropwhile(pred, target=None):
 
 @coroutine
 def takewhile(pred, target=None):
-    ''' Sends elements to target until pred returns False
+    """ Sends elements to target until pred returns False
 
         :param callable pred: Predicate that evaluates incoming data
         :param target: (default: None) Next coroutine in the data pipeline
@@ -382,7 +382,7 @@ def takewhile(pred, target=None):
         0.5
         >>> tw.send(2)      # Nothing is printed anymore
         >>> tw.send(0.2)    # Nothing is printed
-    '''
+    """
     if not target:
         target = ((yield))
     while True:
@@ -401,13 +401,12 @@ def takewhile(pred, target=None):
 
 @coroutine
 def publisher(topic, msg_type):
-    ''' A coroutine-based rospy.publisher
+    """ A coroutine-based rospy.publisher
 
         :topic: (str) Name of the topic to publish
         :msg_type: type of the message to publish
 
         Example of use:
-        ---------------
 
         >>> from std_msgs import String
         >>> pub = publisher('/my_topic', String)
@@ -415,7 +414,7 @@ def publisher(topic, msg_type):
         >>> # At this point you would receive "Hello World!" in /my_topic
 
         See: rospy.publisher
-    '''
+    """
     pub = rospy.Publisher(topic, msg_type)
     while True:
         pub.publish((yield))
@@ -423,19 +422,19 @@ def publisher(topic, msg_type):
 
 @coroutine
 def logger(logger_, prefix='', suffix=''):
-    ''' Calls logger_ on incoming data
+    """ Calls logger_ on incoming data
 
         :param callable logger_: Logger function that prints logging messages
         :param str prefix: (Default: '') Prefix to append to incoming data.
         :param str suffix: (Default: '') Suffix to append to incoming data.
 
 
-        Example
+        Example:
 
         >>> err_logger = logger(rospy.logerr, prefix="ERROR: ", suffix="!!!")
         >>> err_logger.send("This is an error message")
         "ERROR: This is an error message!!!"
-    '''
+    """
     while True:
         try:
             string = str((yield))
@@ -446,12 +445,12 @@ def logger(logger_, prefix='', suffix=''):
 
 @coroutine
 def printer(prefix='', suffix=''):
-    ''' Prints incoming data.
+    """ Prints incoming data.
 
         :param str prefix: (Default: '') Prefix to append to incoming data.
         :param str suffix: (Default: '') Suffix to append to incoming data.
 
-        Example
+        Example:
 
         >>> p = printer()
         >>> p.send("Hello World")
@@ -459,7 +458,7 @@ def printer(prefix='', suffix=''):
         >>> p = printer(prefix='You said: ', suffix='!')
         >>> p.send("Hello World")
         'You said: Hello World"'
-    '''
+    """
     while True:
         try:
             item = (yield)
@@ -472,7 +471,7 @@ def printer(prefix='', suffix=''):
 ## Data producers
 ###############################################################################
 class PipedSubscriber(object):
-    ''' A wrapper of the `rospy.Subscriber` class that connects the Subscriber
+    """ A wrapper of the `rospy.Subscriber` class that connects the Subscriber
         directly with a coroutine (or a pipe) that processes the incoming msgs.
         In short it has the same api as `rospy.subscriber` but, instead of a
         callback you pass it a coroutine or a `pipe` to it.
@@ -494,7 +493,7 @@ class PipedSubscriber(object):
         >>> rospy.loginfo("Node {} started".format(rospy.get_name()))
         >>> PipedSubscriber('my_topic', String, pipe)
         >>> # rospy.spin()
-    '''
+    """
     def __init__(self, topic_name, msg_type, target, *args, **kwargs):
         rospy.Subscriber(topic_name, msg_type, target.send, *args, **kwargs)
 
@@ -503,7 +502,7 @@ class PipedSubscriber(object):
 ## Utilities
 ###############################################################################
 def pipe(coroutines):
-    ''' Chains several coroutines together and returns the first coroutine
+    """ Chains several coroutines together and returns the first coroutine
         of the pipe so you can send messages through the whole pipe.
 
         Note: The pipe establishes the connections between coroutines,
@@ -549,7 +548,7 @@ def pipe(coroutines):
         0.7
         >>> pipe.send(0.1)
         0.4
-    '''
+    """
     _coroutines = list(reversed(coroutines))
     pairs = list(zip(_coroutines[:], _coroutines[1:]))
     for p in pairs:

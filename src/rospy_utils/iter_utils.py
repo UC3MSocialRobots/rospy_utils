@@ -18,24 +18,20 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 
-'''
+"""
     __author__ Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
     __date__ 2014-04
 
     Some utils to manipulate iterators
-'''
+"""
 
 
 def as_iter(obj):
-    '''
+    """
         If ``obj`` is no iterable, it encapuslates it in a tuple
 
-        Params:
-
-        :obj: the object to check if is iterable
-
-        Returns:
-        :obj: if it is iterable, else ``(obj, )``
+        :param obj: the object to check if is iterable
+        :return: obj if it is iterable, else ``(obj, )``
 
         Example:
 
@@ -45,5 +41,5 @@ def as_iter(obj):
         (123,)
         >>> as_iter('hello')
         ('hello',)
-    '''
+    """
     return obj if hasattr(obj, '__iter__') else (obj,)
