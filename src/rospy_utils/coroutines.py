@@ -186,7 +186,8 @@ def do(f, target=None):
     if not target:
         target = (yield)
     while True:
-        msg = f((yield))
+        msg = (yield)
+        f(msg)
         target.send(msg)
 
 
