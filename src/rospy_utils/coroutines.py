@@ -155,6 +155,42 @@ def sliding_window(size, target=None):
 
 
 @coroutine
+def do(f, target=None):
+    """
+    Apply f on x, send x to the next coroutine.
+
+    Note that ``do`` does not send f(x) but x itself. That means that only
+    side effects of ``f`` are relevant.
+    This is a good coroutine for logging or publishing messages through
+    the pipeline.
+
+    :param callable f: Function with side effects to apply to incoming messages
+    :param target: (default: None) Next coroutine in the data pipeline
+        Note that if you don't specify instantiate the coroutine
+        specifying the ``target`` you'll have to send it later using
+        ``do.send(target)`` method.
+    :type target: coroutine or None
+
+    Example
+
+    >>> def print_msg(msg):
+    >>>     print msg
+    >>> t = do(print_msg, transformer(lambda x: x+1, printer()))
+    >>> t.send(1)
+    1
+    2
+    >>> t.send(10)
+    10
+    11
+    """
+    if not target:
+        target = (yield)
+    while True:
+        msg = f((yield))
+        target.send(msg)
+
+
+@coroutine
 def transformer(f, target=None):
     """
     Apply f to incoming data and send the result to target coroutine.
