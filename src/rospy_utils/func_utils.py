@@ -19,10 +19,10 @@
 
 
 """
-    :author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    :date: 2014-04
+Utils to ease the use of functions and methods in python
 
-    Utils to ease the use of functions and methods in python
+:author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+:date: 2014-04
 """
 
 from functools import wraps
@@ -31,8 +31,10 @@ from contextlib import contextmanager
 
 class PreconditionError(Exception):
 
-    """ Exception that shuold be raised when the preconditions of a function
-        are not met """
+    """
+    Exception that shuold be raised when the preconditions of a function
+    are not met
+    """
     pass
 
 
@@ -40,20 +42,21 @@ class PreconditionError(Exception):
 def error_handler(logger=None, log_msg='',
                   action=None, action_args=None, action_kwargs=None,
                   errors=Exception, reraise=False):
-    """ Context Manager that logs errors and executes an action if error occurs
+    """
+    Context Manager that logs errors and executes an action if error occurs
 
-        @param logger: logging function. Default: None
-        @type logger: callable
-        @param log_msg: message to add to the logger in case of fail
-                        (It will be preced to the exception message)
-        @type log_msg: str
-        @param action: function to call if an exception occurs. Default: None
-        @type action: callable
-        @param action_args: argument list to pass to action. Default:[]
-        @param action_kwargs: argument keywords to pass to action. Default: {}
-        @param errors: exceptions to catch. Default: Exception
-        @type errors: Exception or a list of Exceptions
-        @param reraise: (default: False) Wether to reraise precondition errors
+    @param logger: logging function. Default: None
+    @type logger: callable
+    @param log_msg: message to add to the logger in case of fail
+                    (It will be preced to the exception message)
+    @type log_msg: str
+    @param action: function to call if an exception occurs. Default: None
+    @type action: callable
+    @param action_args: argument list to pass to action. Default:[]
+    @param action_kwargs: argument keywords to pass to action. Default: {}
+    @param errors: exceptions to catch. Default: Exception
+    @type errors: Exception or a list of Exceptions
+    @param reraise: (default: False) Wether to reraise precondition errors
     """
     try:
         yield
@@ -70,23 +73,23 @@ def error_handler(logger=None, log_msg='',
 def preconditions(precons, logger=None, log_msg='', errors=PreconditionError,
                   reraise=True):
     """
-        Decorator that binds precondition checking to a function.
+    Decorator that binds precondition checking to a function.
 
-        @param precons: Preconditions to check
-                        Must be a function with same attribs as decorated func
-        @type precons: callable
-        @param logger: Logger function executed in case of precons fail
-                       Default: None
-        @param log_msg: Message to add to the logger in case of fail
-                        (It will be preced to the exception message)
-                        Default: ''
-        @type log_msg: str
-        @param errors: Exceptions to catch in preconditions.
-                       Default: L{PreconditionError}
-        @type errors: Exception or a list of Exceptions
-        @param reraise: (default: True) Wether to reraise precondition errors
+    @param precons: Preconditions to check
+                    Must be a function with same attribs as decorated func
+    @type precons: callable
+    @param logger: Logger function executed in case of precons fail
+                   Default: None
+    @param log_msg: Message to add to the logger in case of fail
+                    (It will be preced to the exception message)
+                    Default: ''
+    @type log_msg: str
+    @param errors: Exceptions to catch in preconditions.
+                   Default: L{PreconditionError}
+    @type errors: Exception or a list of Exceptions
+    @param reraise: (default: True) Wether to reraise precondition errors
 
-        @return: None if reraise is false and preconditions do not pass
+    @return: None if reraise is false and preconditions do not pass
     """
     def decor(f):
         @wraps(f)
@@ -102,16 +105,16 @@ def preconditions(precons, logger=None, log_msg='', errors=PreconditionError,
 
 def load_class(full_name):
     """
-        Returns an builder of a Python class from its qualified full name.
-        To build the object of that class, simply call the returned object.
+    Returns an builder of a Python class from its qualified full name.
+    To build the object of that class, simply call the returned object.
 
-        Adapted from this SO Answer: http://stackoverflow.com/a/547867/630598
-        @type full_name: string
-        @param full_name: Class full name: foo.bar.klass
-        @return: an instance of foo.bar.Klass. It has to be called just
+    Adapted from this SO Answer: http://stackoverflow.com/a/547867/630598
+    @type full_name: string
+    @param full_name: Class full name: foo.bar.klass
+    @return: an instance of foo.bar.Klass. It has to be called just
 
-        Example:
-        --------
+    Example:
+
         >>> # Assume Klass is declared in module foo.bar
         >>> class Klass():
         >>>    def __init__(self):
@@ -120,7 +123,6 @@ def load_class(full_name):
         >>> my_class = load_class('foo.bar.Klass')
         >>> my_class()
         ... 'klass instantiated'
-
     """
     module_name, klass_name = full_name.rsplit('.', 1)
     mod = __import__(module_name, fromlist=[klass_name])
