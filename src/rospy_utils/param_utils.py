@@ -35,7 +35,7 @@ from collections import namedtuple
 from .iter_utils import as_iter
 
 Param = namedtuple('Param', 'name value')
-Param.__doc__ = """A struct defining a pair param_name, param_value."""
+# Param.__doc__ = """A struct defining a pair param_name, param_value."""
 MASTER_PARAMS = ('/roslaunch', '/rosdistro', '/rosversion', '/run_id')
 
 
@@ -55,9 +55,9 @@ def __get_parameter(pname):
 
 
 def get_parameters(parameters):
-    """ 
+    """
     Yield the params from Parameter Server that are in attribute 'parameters'
-    
+
     :input: A list parameters to retrieve from the ParamServer
     :yields: A Param("name value) namedtuple
     :raises: ParamNotFoundError in case a parameter Error
@@ -76,10 +76,10 @@ def get_parameters(parameters):
 def get_all_user_params():
     """
     Yield all user parameters loaded in the parameter server.
-    
-    It yields all parameters except the ones that are 
+
+    It yields all parameters except the ones that are
     already loaded by the ROSMaster.
-        
+
     Attributes:
     :param ns: The namespace where to look for.
     Yields:
@@ -108,7 +108,7 @@ def load_params(params):
 def __attach_parameter(obj, param, create_new=False):
     """
     Modify obj by attaching to it a parameter.
-    
+
     :param obj: Object to add the parameters
     :param param: parameter to add from the parameter server
     :type param: Param
