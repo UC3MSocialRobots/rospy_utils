@@ -20,13 +20,13 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 """
-    :author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    :date: 2014-04
+Some utils to ease the use of loading parameters from ROS.
 
-    Some utils to ease the use of loading parameters from ROS
+:author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+:date: 2014-04
 """
-import roslib
-roslib.load_manifest('rospy_utils')
+# import roslib
+# roslib.load_manifest('rospy_utils')
 import rospy
 
 from collections import namedtuple
@@ -35,13 +35,13 @@ from collections import namedtuple
 from .iter_utils import as_iter
 
 Param = namedtuple('Param', 'name value')
-Param.___doc__ = """ A struct defining a pair param_name, param_value"""
+Param.__doc__ = """A struct defining a pair param_name, param_value."""
 MASTER_PARAMS = ('/roslaunch', '/rosdistro', '/rosversion', '/run_id')
 
 
 class ParamNotFoundError(Exception):
 
-    """ Error that occurs when is not possible to laod a param"""
+    """ Error that occurs when is not possible to laod a param."""
     pass
 
 
@@ -55,12 +55,14 @@ def __get_parameter(pname):
 
 
 def get_parameters(parameters):
-    """ Yields the parameters from the Parameter Server
-        that are in attribute 'parameters'
-        :input: A list parameters to retrieve from the ParamServer
-        :yields: A Param("name value) namedtuple
-        :raises: ParamNotFoundError in case a parameter Error
-        :raises: ValueError in case parameters is empty"""
+    """ 
+    Yield the params from Parameter Server that are in attribute 'parameters'
+    
+    :input: A list parameters to retrieve from the ParamServer
+    :yields: A Param("name value) namedtuple
+    :raises: ParamNotFoundError in case a parameter Error
+    :raises: ValueError in case parameters is empty
+    """
     params = as_iter(parameters)
     for pname in params:
         try:
@@ -72,12 +74,17 @@ def get_parameters(parameters):
 
 
 def get_all_user_params():
-    """ Yields all the parameters loaded in the parameter server
-        except the ones already loaded by the ROSMaster.
-        Attributes:
-        :param ns: The namespace where to look for.
-        Yields:
-        :return param(param_full_name, param_value): yields A param"""
+    """
+    Yield all user parameters loaded in the parameter server.
+    
+    It yields all parameters except the ones that are 
+    already loaded by the ROSMaster.
+        
+    Attributes:
+    :param ns: The namespace where to look for.
+    Yields:
+    :return param(param_full_name, param_value): yields A param
+    """
 
     all_param_names = rospy.get_param_names()
 
@@ -89,22 +96,25 @@ def get_all_user_params():
 
 
 def load_params(params):
-    """ Generator that yields the values of the entered params
-        :raises: ParamNotFoundError in case a parameter Error
-        :raises: ValueError in case parameters is empty"""
+    """
+    Generator that yields the values of the entered params.
+    :raises: ParamNotFoundError in case a parameter Error
+    :raises: ValueError in case parameters is empty
+    """
     for _, pvalue in get_parameters(params):
         yield pvalue
 
 
 def __attach_parameter(obj, param, create_new=False):
     """
-        Modifies obj by attaching to it a parameter
-        @param obj: Object to add the parameters
-        @param param: parameter to add from the parameter server
-        @type param: Param
-        @param create_attribs:  (Defautl: False)
-                                Wether to add new attributes to the object
-                                in case they do not have (see example)
+    Modify obj by attaching to it a parameter.
+    
+    :param obj: Object to add the parameters
+    :param param: parameter to add from the parameter server
+    :type param: Param
+    :param create_attribs:  (Defautl: False)
+                            Wether to add new attributes to the object
+                            in case they do not have (see example)
     """
     pname = param.name.rsplit('/', 1)[-1]  # Get rid of param namespace
     if not hasattr(obj, pname) and not create_new:
@@ -114,28 +124,28 @@ def __attach_parameter(obj, param, create_new=False):
 
 
 def attach_parameters(obj, params, create_new=False):
-    """ Attaches a list of parameters to a node
+    """
+    Attach a list of parameters to a node.
 
-        @param obj: Object to add the parameters
-        @param params: name of the params to add from the parameter server
-        @type params: a string or a list of strings
-        @param create_attribs:  (Defautl: False)
-                                Wether to add new attributes to the object
-                                in case they do not have (see example)
-        @return: obj with new attributes attached
+    :param obj: Object to add the parameters
+    :param params: name of the params to add from the parameter server
+    :type params: a string or a list of strings
+    :param create_attribs:  (Defautl: False)
+                            Wether to add new attributes to the object
+                            in case they do not have (see example)
+    :return: obj with new attributes attached
 
-        Eg:
+    Example:
 
-            >>> rospy.set_param('p',  'hi!')
-            >>> rospy.set_param('p2', 'bye!')
-            >>> my_obj = SomeClass(p='zzz')
-            >>> print my_obj.p, my_obj.p2
-            'zzz'
-            AttributeError: 'SomeClass' object has no attribute 'p2'
-            >>> my_obj = attach_parameters(my_obj, ['p', p2', create_new=True)
-            >>> print my_obj.p, my_obj.p2
-            'hi!', 'bye!
-
+        >>> rospy.set_param('p',  'hi!')
+        >>> rospy.set_param('p2', 'bye!')
+        >>> my_obj = SomeClass(p='zzz')
+        >>> print my_obj.p, my_obj.p2
+        'zzz'
+        AttributeError: 'SomeClass' object has no attribute 'p2'
+        >>> my_obj = attach_parameters(my_obj, ['p', p2', create_new=True)
+        >>> print my_obj.p, my_obj.p2
+        'hi!', 'bye!
     """
     try:
         params = get_parameters(params)
