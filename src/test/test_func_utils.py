@@ -19,8 +19,8 @@
 
 
 PKG = 'rospy_utils'
-import roslib
-roslib.load_manifest(PKG)
+#import roslib
+#roslib.load_manifest(PKG)
 
 from rospy_utils.func_utils import (load_class, preconditions,
                                     PreconditionError)
