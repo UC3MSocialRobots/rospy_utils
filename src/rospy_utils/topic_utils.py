@@ -17,11 +17,11 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-""" Some utilities to ease the subscription and publication of ros topics
+"""Some utilities to ease the subscription and publication of ros topics
 """
 
-import roslib
-roslib.load_manifest('monarch_multimodal_fusion')
+#import roslib
+#roslib.load_manifest('monarch_multimodal_fusion')
 # import argparse
 # import rospy
 
