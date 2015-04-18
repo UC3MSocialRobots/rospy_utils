@@ -28,8 +28,8 @@ in_topic ------> |   f   | -------> out_topic
                  ---------
 """
 
-import roslib
-roslib.load_manifest('monarch_multimodal_fusion')
+# import roslib
+# roslib.load_manifest('monarch_multimodal_fusion')
 import sys
 import argparse
 import rospy
