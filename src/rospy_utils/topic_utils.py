@@ -17,11 +17,10 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-""" Some utilities to ease the subscription and publication of ros topics
-"""
+"""Utilities to ease the subscription and publication of ros topics."""
 
-import roslib
-roslib.load_manifest('monarch_multimodal_fusion')
+#import roslib
+#roslib.load_manifest('monarch_multimodal_fusion')
 # import argparse
 # import rospy
 
@@ -30,14 +29,15 @@ from rospy_utils import coroutines as co
 
 
 def get_msg_type(msg_typename):
-    """ Translates from a message typename to a message actual type
+    """
+    Translate from a message typename to a message actual type.
 
-        :param str msg_typename: The typename of the msg.
-            Example: 'std_msgs/String'
-        :return: The type of the message specified as parameter.
-        :rtype: type
+    :param str msg_typename: The typename of the msg.
+        Example: 'std_msgs/String'
+    :return: The type of the message specified as parameter.
+    :rtype: type
 
-        Example:
+    Example:
 
         >>> msg = get_msg_type("std_msgs/String")
         >>> msg(data='Hello World!')
@@ -49,9 +49,12 @@ def get_msg_type(msg_typename):
 
 
 class ChainWith(object):
-    """Chains two topics with a coroutine"""
+    
+    """Chains two topics with a coroutine."""
+    
     def __init__(self, coroutine, in_topic, in_typeneme,
                  out_topic, out_typename, *args, **kwargs):
+        """Constructor."""
         super(ChainWith, self).__init__()
         self.coroutine = coroutine
         self.in_topic = in_topic

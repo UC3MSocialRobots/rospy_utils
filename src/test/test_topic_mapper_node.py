@@ -20,20 +20,18 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 
-PKG = 'rospy_utils'
-NNAME = 'test_topic_mapper_node'
-from itertools import chain
-
-import roslib
-roslib.load_manifest(PKG)
 import rospy
 import unittest
 
 from std_msgs.msg import (Int32, String)
 from rospy_utils import topic_utils as tu
 
+PKG = 'rospy_utils'
+NNAME = 'test_topic_mapper_node'
+
 
 class TestTopicMapperNode(unittest.TestCase):
+
     def __init__(self, *args):
         super(TestTopicMapperNode, self).__init__(*args)
         rospy.init_node(NNAME)
@@ -69,4 +67,3 @@ if __name__ == '__main__':
     import rostest
     rostest.rosrun(PKG, 'test_topic_mapper_node',
                    TestTopicMapperNode, sysargs=None)
-                   # sysargs=['--cov'])
