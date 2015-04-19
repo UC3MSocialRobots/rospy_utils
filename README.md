@@ -38,4 +38,5 @@ The license of the package is custom LASR-UC3M (Licencia Académica Social Robot
 [![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
 [![Code Health](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master/landscape.svg)](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/?branch=master)
+[![Code Climate](https://codeclimate.com/github/UC3MSocialRobots/rospy_utils/badges/gpa.svg)](https://codeclimate.com/github/UC3MSocialRobots/rospy_utils)
 [![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master)
