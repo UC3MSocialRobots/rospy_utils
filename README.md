@@ -26,8 +26,15 @@ $ roscd rospy_utils
 $ # Install dependencies of the package
 $ sudo pip install -r requirements.txt
 ```
+
+## Testing
+
 You can also test it by runing `nosetests` or `tox` inside the `rospy_utils` dir.
 
+
+## Examples
+
+Comming soon
 
 ## LICENSE:
 
