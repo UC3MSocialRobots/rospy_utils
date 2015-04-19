@@ -41,7 +41,7 @@ MASTER_PARAMS = ('/roslaunch', '/rosdistro', '/rosversion', '/run_id')
 
 class ParamNotFoundError(Exception):
 
-    """ Error that occurs when is not possible to laod a param."""
+    """Error that occurs when is not possible to laod a param."""
     pass
 
 
@@ -98,6 +98,7 @@ def get_all_user_params():
 def load_params(params):
     """
     Generator that yields the values of the entered params.
+
     :raises: ParamNotFoundError in case a parameter Error
     :raises: ValueError in case parameters is empty
     """

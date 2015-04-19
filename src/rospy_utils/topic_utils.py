@@ -19,8 +19,8 @@
 
 """Utilities to ease the subscription and publication of ros topics."""
 
-#import roslib
-#roslib.load_manifest('monarch_multimodal_fusion')
+# import roslib
+# roslib.load_manifest('monarch_multimodal_fusion')
 # import argparse
 # import rospy
 
@@ -49,9 +49,9 @@ def get_msg_type(msg_typename):
 
 
 class ChainWith(object):
-    
+
     """Chains two topics with a coroutine."""
-    
+
     def __init__(self, coroutine, in_topic, in_typeneme,
                  out_topic, out_typename, *args, **kwargs):
         """Constructor."""

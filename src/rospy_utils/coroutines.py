@@ -522,7 +522,7 @@ def printer(prefix='', suffix=''):
 class PipedSubscriber(object):
 
     """
-    Subscriber to a ROS topic and send recive messages to a coroutine or a pipe.
+    Subscriber to a ROS topic to send/receive msgs to a coroutine or a pipe.
 
     A wrapper of the `rospy.Subscriber` class that connects the Subscriber
     directly with a coroutine (or a pipe) that processes the incoming msgs.
