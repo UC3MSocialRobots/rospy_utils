@@ -119,7 +119,7 @@ def accumulator(num_items, target=None):
         items.append((yield))
         if len(items) == num_items:
             target.send(items)
-            del(items[:])
+            del items[:]
 
 
 @coroutine
