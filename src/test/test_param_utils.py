@@ -127,6 +127,4 @@ if __name__ == '__main__':
     rostest.rosrun(PKG, 'test_param_utils', ParamUtils_TestCase,
                    # sysargs=['--cov'])
                    sysargs=None)
-                       # import rosunit
-                       # rosunit.unitrun(PKG, 'test_param_utils',
-                       # ParamUtils_TestCase)
+
