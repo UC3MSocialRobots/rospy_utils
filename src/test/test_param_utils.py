@@ -20,7 +20,7 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 
-# PKG = 'rospy_utils'
+PKG = 'rospy_utils'
 # NNAME = 'test_param_utils'
 # import roslib
 # roslib.load_manifest(PKG)
