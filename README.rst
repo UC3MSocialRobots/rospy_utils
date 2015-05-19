@@ -59,23 +59,18 @@ distribute the sources.
 Quality Metrics
 ---------------
 
-|Build Status| |Coverage Status|
-
-Automatic Reviews:
-^^^^^^^^^^^^^^^^^^
-
-I'm using different automatic code review tools since each one provides
-slightly different code checks.
-
 .. image:: https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master
     :target: https://travis-ci.org/UC3MSocialRobots/rospy_utils
 
 .. image:: https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master
     :target: https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master
 
-.. image:: https://readthedocs.org/projects/rospy-utils/badge/?version=latest
-    :target: https://readthedocs.org/projects/rospy-utils/?badge=latest
-    :alt: Documentation Status
+
+Code Quality Reviews:
+^^^^^^^^^^^^^^^^^^
+
+I'm using different automatic code review tools since each one provides
+slightly different code checks.
 
 .. image:: https://landscape.io/github/UC3MSocialRobots/rospy_utils/master/landscape.svg?style=flat
     :target: https://landscape.io/github/UC3MSocialRobots/rospy_utils/master
