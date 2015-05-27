@@ -1,4 +1,3 @@
-
 # :version:      0.1.0
 # :copyright:    Copyright (C) 2014 Universidad Carlos III de Madrid.
 #                Todos los derechos reservados.
@@ -18,11 +17,11 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 """
+Coroutines that ease the data manipulation and communication in ROS.
+
 :author: Victor Gonzalez ()
 :maintainer: Victor Gonzalez
-:version: 0.1
-
-Coroutines that ease the data manipulation and communication in ROS.
+:version: 0.2
 
 """
 from __future__ import print_function
@@ -219,6 +218,61 @@ def transformer(f, target=None):
 
 
 mapper = transformer   # alias
+
+
+@coroutine
+def startransformer(f, target=None, *fargs, **fkwargs):
+    """
+    Apply f (where f has multiple args) to incoming data. Send result to target.
+
+    This is an extension of the transformer coroutine that uses functions
+    that require more than one argument. Note that the first argument of f
+    is received by the coroutine, while the remaining args are pre-set in
+    fargs and fkwargs.
+
+    :param callable f: Function to apply to every incoming message
+    :param target: (default: None) Next coroutine in the data pipeline
+        Note that if you don't specify instantiate the coroutine
+        specifying the ``target`` you'll have to send it later using
+        ``transformer.send(target)`` method.
+    :type target: coroutine or None
+    :param fargs: Extra arguments to pass to `f`
+    :param fkwargs: keyword arguments to pass to `f`
+
+    Example:
+
+    >>> import operator as op
+    >>> increment = transformer(op.add, printer(), 1)
+    >>> increment.send(1)
+    2
+    >>> increment.send(2)
+    3
+    >>> increment.send(3)
+    4
+    >>> increment.send(10)
+    11
+
+    Note that if you want to use the curried version of startransformer you
+    need to set explicitly the target coroutine as `None`:
+
+    >>> import operator as op
+    >>> increment = transformer(op.add, None, 1)  # Explicitly say "No target".
+    >>> increment.send(printer())          # Send the target first.
+    >>> increment.send(1)                  # And then you can send regular data.
+    2
+    >>> increment.send(2)
+    3
+    >>> increment.send(3)
+    4
+    """
+    if not target:
+        target = (yield)
+    while True:
+        msg = f((yield), *fargs, **fkwargs)
+        target.send(msg)
+
+
+starmapper = startransformer   # alias
 
 
 @coroutine

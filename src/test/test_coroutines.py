@@ -22,6 +22,7 @@ import unittest
 from mock import patch
 import numpy as np
 import operator as op
+from functools import partial
 import rospy
 from std_msgs.msg import String
 
@@ -137,6 +138,29 @@ class TestCoroutines(unittest.TestCase):
         test_transformer.send(tester)
         for i in self.data:
             test_transformer.send(i)
+
+
+    # Test Startransformer #####################################################
+    def __set_up_startransformer(self):
+        ### TODO: inc should accept several parameters (eg. operator.sum, etc.) ###
+        plusone = partial(op.add, 1)
+        expected = map(plusone, self.data)
+        tester = self.item_evaluator(expected)
+        return (expected, tester)
+
+    def test_startransformer(self):
+        expected, tester = self.__set_up_startransformer()
+        test_startransformer = co.startransformer(op.add, tester, 1)
+        for i in self.data:
+            test_startransformer.send(i)
+
+    def test_startransformer_curried(self):
+        expected, tester = self.__set_up_startransformer()
+        test_startransformer = co.startransformer(op.add, None, 1)
+        test_startransformer.send(tester)
+        for i in self.data:
+            test_startransformer.send(i)
+
 
     # Test Filter ##############################################################
     def __setup_filterer(self):
