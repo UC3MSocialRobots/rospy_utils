@@ -10,3 +10,4 @@ mock
 nose
 nose-cov
 nose-cover3
+sphinx_rtd_theme

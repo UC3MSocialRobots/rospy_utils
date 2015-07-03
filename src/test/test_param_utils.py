@@ -21,7 +21,14 @@
 
 
 PKG = 'rospy_utils'
+<<<<<<< HEAD
 NNAME = 'test_param_utils'
+=======
+# NNAME = 'test_param_utils'
+# import roslib
+# roslib.load_manifest(PKG)
+# import sys
+>>>>>>> bcc88c197682f418bf693ca6fcd78899d051a3bd
 import rospy
 import unittest
 from operator import attrgetter

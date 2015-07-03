@@ -18,13 +18,14 @@
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
 
-PKG = 'rospy_utils'
-import roslib
-roslib.load_manifest(PKG)
+# import roslib
+# roslib.load_manifest(PKG)
 # import rospy
 
 from rospy_utils.iter_utils import as_iter
 import unittest
+
+PKG = 'rospy_utils'
 
 
 class TestIterUtils(unittest.TestCase):

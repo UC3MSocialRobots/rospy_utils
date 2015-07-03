@@ -19,21 +19,23 @@
 
 
 """
-    __author__ Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
-    __date__ 2014-04
+Some utils to manipulate iterators.
 
-    Some utils to manipulate iterators
+:author: Victor Gonzalez Pacheco (victor.gonzalez.pacheco at gmail.com)
+:date: 2014-04
 """
 
 
 def as_iter(obj):
     """
-        If ``obj`` is no iterable, it encapuslates it in a tuple
+    Return ``obj`` encapsulated into a tuple if it's not an iterable.
 
-        :param obj: the object to check if is iterable
-        :return: obj if it is iterable, else ``(obj, )``
+    Otherwise returns ``obj``
 
-        Example:
+    :param obj: the object to check if is iterable
+    :return: obj if it is iterable, else ``(obj, )``
+
+    Example:
 
         >>> as_iter([1,2,3])
         [1,2,3]

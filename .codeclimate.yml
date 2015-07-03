@@ -1,0 +1,8 @@
+languages:
+  Ruby: true
+  JavaScript: true
+  PHP: true
+  Python: true
+exclude_paths:
+- src/test/test_coroutines.py
+- src/test/*

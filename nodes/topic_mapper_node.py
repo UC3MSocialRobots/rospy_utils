@@ -17,18 +17,19 @@
 # Robotics Lab - UC3M en el fichero LICENCIA.txt, que tambien se encuentra
 # disponible en <URL a la LASR_UC3Mv1.0>.
 
-"""Applies a function to incoming messages and sends the output ot other topic
+"""
+Applies a function to incoming messages and sends the output ot other topic
 
-   Here is a diagram of the node:
-                    _________
-               x    |       |   f(x)
-   in_topic ------> |   f   | -------> out_topic
-                    |       |
-                    ---------
+Here is a diagram of the node:
+                 _________
+            x    |       |   f(x)
+in_topic ------> |   f   | -------> out_topic
+                 |       |
+                 ---------
 """
 
-import roslib
-roslib.load_manifest('monarch_multimodal_fusion')
+# import roslib
+# roslib.load_manifest('monarch_multimodal_fusion')
 import sys
 import argparse
 import rospy
@@ -38,8 +39,7 @@ from rospy_utils import coroutines as co
 
 
 def parse_arguments(args):
-    """Parses all the arguments"""
-
+    """Parse all the arguments."""
     parser = argparse.ArgumentParser(
         description="Creates a node that applies a function " +
                     "to every incoming message and sends its output " +
@@ -64,18 +64,19 @@ def parse_arguments(args):
 
 
 def get_msg_type(msg_typename):
-    """ Translates from a message typename to a message actual type
+    """
+    Translates from a message typename to a message actual type.
 
-        :param str msg_typename: The typename of the msg.
-            Example: 'std_msgs/String'
-        :return: The type of the message specified as parameter.
-        :rtype: type
+    :param str msg_typename: The typename of the msg.
+        Example: 'std_msgs/String'
+    :return: The type of the message specified as parameter.
+    :rtype: type
 
-        Example:
+    Example:
 
-        >>> msg = get_msg_type("std_msgs/String")
-        >>> msg(data='Hello World!')
-        data: Hello World!
+    >>> msg = get_msg_type("std_msgs/String")
+    >>> msg(data='Hello World!')
+    data: Hello World!
     """
     msg_package, msg_name = msg_typename.split('/')
     msg_full_typename = '.'.join([msg_package, 'msg', msg_name])
@@ -95,7 +96,6 @@ if __name__ == '__main__':
         rospy.init_node('topic_mapper')
         pipe = co.pipe([co.transformer(func),
                         co.publisher(out_topic, out_type)])
-                        # co.logger(rospy.logwarn)])
         subscriber = co.PipedSubscriber(in_topic, in_type, pipe)
         rospy.loginfo("Node {} successfully started\nIt will map: {}\n"
                       "From: {} ({}) --> To: {} ({})"
