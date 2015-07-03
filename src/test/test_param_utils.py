@@ -22,9 +22,6 @@
 
 PKG = 'rospy_utils'
 NNAME = 'test_param_utils'
-import roslib
-roslib.load_manifest(PKG)
-import sys
 import rospy
 import unittest
 from operator import attrgetter
@@ -124,9 +121,9 @@ class ParamUtils_TestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     import rostest
-    rostest.rosrun(PKG, 'test_param_utils', ParamUtils_TestCase,
+    rostest.rosrun(PKG, 'test_param_utils', ParamUtils_TestCase)
                    # sysargs=['--cov'])
-                   sysargs=None)
+                   # sysargs=None)
                        # import rosunit
                        # rosunit.unitrun(PKG, 'test_param_utils',
                        # ParamUtils_TestCase)
