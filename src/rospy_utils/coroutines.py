@@ -54,7 +54,7 @@ def coroutine(func):
     >>> g.send("python generators rock!")
 
     Unshamely taken from: http://dabeaz.com/coroutines/coroutine.py
-    BTW: If you still didn't check out his great tutorials, on coroutines
+    BTW: If you still havent't checked out his great tutorials, on coroutines
     Go right now to learn some Python magic tricks, litte bastard:
     http://dabeaz.com/coroutines
     """
@@ -625,7 +625,7 @@ def pipe(coroutines):
     :return: The first coroutine of the pipe
     :rtype: coroutine
 
-    Example
+    Example:
 
     >>> coroutines = (transformer(lambda x: x+1),
                       filterer(lambda x: x%2==0),
@@ -636,7 +636,6 @@ def pipe(coroutines):
     >>> p.send(4)    # No output
     >>> p.send(-1)
     0
-
 
     Here you can see a more useful example where we calculate the mean
     of the last 3 received messages and print them on screen only if they
