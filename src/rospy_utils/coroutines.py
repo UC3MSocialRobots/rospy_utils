@@ -54,8 +54,8 @@ def coroutine(func):
     >>> g.send("python generators rock!")
 
     Unshamely taken from: http://dabeaz.com/coroutines/coroutine.py
-    BTW: If you still havent't checked out his great tutorials, on coroutines
-    Go right now to learn some Python magic tricks, litte bastard:
+    BTW: If you still havent't checked out his great tutorials on coroutines
+    do it right now and you will learn some Python magic tricks, litte bastard:
     http://dabeaz.com/coroutines
     """
     @wraps(func)
@@ -252,8 +252,8 @@ def startransformer(f, target=None, *fargs, **fkwargs):
     >>> increment.send(10)
     11
 
-    Note that if you want to use the curried version of startransformer you
-    need to set explicitly the target coroutine as `None`:
+    Note that if you want to use the curried version of startransformer
+    (E.g. for their use in pipes), you mustset the target coroutine as `None`:
 
     >>> import operator as op
     >>> increment = transformer(op.add, None, 1)  # Explicitly say "No target".
@@ -304,6 +304,57 @@ def filterer(pred, target=None):
     while True:
         msg = (yield)
         if pred(msg):
+            target.send(msg)
+
+
+@coroutine
+def starfilterer(pred, target=None, *fargs, **fkwargs):
+    """
+    Multiple argument version of filterer.
+
+    This is an extension of the filterer coroutine which uses predicates
+    that require more than one argument. Note that the first argument of f
+    is received by the coroutine, while the remaining args are pre-set in
+    fargs and fkwargs.
+
+    Coroutine that Filters its messages with pred function.
+
+    :param callable pred: Predicate that evaluates every incoming message
+    :param target: (default: None) Next coroutine in the data pipeline
+        Note that if you don't specify instantiate the coroutine
+        specifying the ``target`` you'll have to send it later using
+        ``filterer.send(target)`` method.
+    :type target: coroutine or None
+    :param fargs: Extra arguments to pass to `f`
+    :param fkwargs: keyword arguments to pass to `f`
+
+
+    Example
+
+    >>> greater_than = lambda x, y: x > y
+    >>> greater_than_two = filterer(greater_than, printer(), 2)
+    >>> for i in xrange(5):
+    >>>     greater_than_two.send(i)
+    3
+    4
+
+    Note that if you want to use the curried version of starfilterer
+    (E.g. for their use in pipes), you mustset the target coroutine as `None`:
+
+    >>> greater_than = lambda x, y: x > y
+    >>> greater_than_two = filterer(greater_than, None, 2)
+    >>> greater_than_two.send(printer())   # First you set the target coroutine
+    >>> for i in xrange(5):      # And then you can send it regular data
+    >>>     greater_than_two.send(i)
+    3
+    4
+
+    """
+    if not target:
+        target = (yield)
+    while True:
+        msg = (yield)
+        if pred(msg, *fargs, **fkwargs):
             target.send(msg)
 
 

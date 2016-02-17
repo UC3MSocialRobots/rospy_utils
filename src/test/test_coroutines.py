@@ -35,10 +35,26 @@ try:
 except:
     print_func = 'builtins.print'
 
+
 # Utility functions
-inc = lambda x: x + 1
-is_even = lambda x: x % 2 == 0
-is_odd = lambda x: x % 2 != 0
+def inc(x):
+    """Increment."""
+    return x + 1
+
+
+def is_even(x):
+    """Return True if x is even."""
+    return x % 2 == 0
+
+
+def is_odd(x):
+    """Return True if x is odd."""
+    return x % 2 != 0
+
+
+def greater_than(x, y):
+    """Return True if x > y."""
+    return x > y
 
 
 class TestCoroutines(unittest.TestCase):
@@ -180,6 +196,26 @@ class TestCoroutines(unittest.TestCase):
         test_filterer.send(tester)
         for i in self.data:
             test_filterer.send(i)
+
+    # Test Starfilterer #####################################################
+    def __set_up_starfilterer(self):
+        bigger_than_two = partial(greater_than, y=2)
+        expected = filter(bigger_than_two, self.data)
+        tester = self.item_evaluator(expected)
+        return (expected, tester)
+
+    def test_starfilterer(self):
+        expected, tester = self.__set_up_starfilterer()
+        test_starfilterer = co.starfilterer(greater_than, tester, 2)
+        for i in self.data:
+            test_starfilterer.send(i)
+
+    def test_starfilterer_curried(self):
+        expected, tester = self.__set_up_starfilterer()
+        test_starfilterer = co.starfilterer(greater_than, None, 2)
+        test_starfilterer.send(tester)
+        for i in self.data:
+            test_starfilterer.send(i)
 
     # Test Splitter ############################################################
     def __setup_splitter(self):
