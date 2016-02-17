@@ -9,7 +9,7 @@
     <node name="topic_mapper" 
           pkg="rospy_utils"
           type="topic_mapper_node.py"
-          respawn="true"
+          respawn="false"
           output="screen"
           args="__builtin__.str mapper_input std_msgs/Int32 mapper_output std_msgs/String"/>
 </launch>

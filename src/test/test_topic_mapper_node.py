@@ -37,12 +37,13 @@ class TestTopicMapperNode(unittest.TestCase):
         rospy.init_node(NNAME)
         # Publishers and Subscribers
         self.publisher = rospy.Publisher('mapper_input', Int32, latch=True)
-        rospy.Subscriber('mapper_output', String, self.callback)
+        # rospy.Subscriber('mapper_output', String, self.callback)
 
     def setUp(self):
         self.data = None
         self.a_string = tu.get_msg_type('std_msgs/String')('This is a string')
         self.an_integer = tu.get_msg_type('std_msgs/Int32')(42)
+        self.publisher.publish(42)
 
     def tearDown(self):
         pass
@@ -58,9 +59,11 @@ class TestTopicMapperNode(unittest.TestCase):
         self.assertEqual(42, self.an_integer.data)
 
     def test_topic_mapper(self):
-        self.publisher.publish(42)
-        rospy.sleep(0.25)
-        self.assertEqual('data: 42', self.data)
+        # self.publisher.publish(42)
+        msg = rospy.wait_for_message('mapper_output', String, timeout=5)
+        self.assertEqual('data: 42', msg.data)
+        # rospy.sleep(1.25)
+        # self.assertEqual('data: 42', self.data)
 
 
 if __name__ == '__main__':
