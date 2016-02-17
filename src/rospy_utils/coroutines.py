@@ -551,7 +551,7 @@ def takewhile(pred, target=None):
 
 
 @coroutine
-def publisher(topic, msg_type):
+def publisher(topic, msg_type, *args, **kwargs):
     """
     A coroutine-based rospy.publisher.
 
@@ -567,7 +567,7 @@ def publisher(topic, msg_type):
 
     See: rospy.publisher
     """
-    pub = rospy.Publisher(topic, msg_type)
+    pub = rospy.Publisher(topic, msg_type, *args, **kwargs)
     while True:
         pub.publish((yield))
 
