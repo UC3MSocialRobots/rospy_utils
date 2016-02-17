@@ -50,7 +50,7 @@ def __get_parameter(pname):
     if not param_full_name:
         raise ParamNotFoundError("'{}'".format(pname))
     p = Param(param_full_name, rospy.get_param(param_full_name))
-    rospy.loginfo("Param '{}'. Value: '{}'".format(p.name, p.value))
+    rospy.logdebug("Param '{}'. Value: '{}'".format(p.name, p.value))
     return p
 
 
