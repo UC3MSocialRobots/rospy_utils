@@ -95,7 +95,7 @@ if __name__ == '__main__':
     try:
         rospy.init_node('topic_mapper')
         pipe = co.pipe([co.transformer(func),
-                        co.publisher(out_topic, out_type)])
+                        co.publisher(out_topic, out_type, latch=True)])
         subscriber = co.PipedSubscriber(in_topic, in_type, pipe)
         rospy.loginfo("Node {} successfully started\nIt will map: {}\n"
                       "From: {} ({}) --> To: {} ({})"
