@@ -1,6 +1,6 @@
 # rospy_utils
-[![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
-[![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master)
+[![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=indigo-devel)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
+[![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=indigo-devel)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=indigo-devel)
 [![Documentation Status](https://readthedocs.org/projects/rospy-utils/badge/?version=latest)](https://readthedocs.org/projects/rospy-utils/?badge=latest)
 
 
@@ -43,14 +43,14 @@ The license of the package is custom LASR-UC3M (Licencia Académica Social Robot
 
 ## Quality Metrics
 
-[![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
-[![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master)
+[![Build Status](https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=indigo-devel)](https://travis-ci.org/UC3MSocialRobots/rospy_utils)
+[![Coverage Status](https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=indigo-devel)](https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=indigo-devel)
 
 #### Automatic Reviews:
 I'm using different automatic code review tools since each one provides slightly different code checks. 
 
 [![Code Health](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master/landscape.svg)](https://landscape.io/github/UC3MSocialRobots/rospy_utils/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/?branch=indigo-devel)
 [![Code Climate](https://codeclimate.com/github/UC3MSocialRobots/rospy_utils/badges/gpa.svg)](https://codeclimate.com/github/UC3MSocialRobots/rospy_utils)
 [![Codacy Badge](https://www.codacy.com/project/badge/fa51233d02db472eaab9fb0351b40fee)](https://www.codacy.com/app/vgonpa/rospy_utils)
 
