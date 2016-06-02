@@ -19,7 +19,7 @@ install: # Use this to install any prerequisites or dependencies necessary to ru
   - sudo rosdep init
   - rosdep update
   # - pip install decorator
-  - pip install mock
+  - pip install mock --upgrade
   - pip install -r requirements.txt
   - pip install scrutinizer-ocular   # Uploads code coverage data to scrutinizer-ci.com
   # Download non-debian stuff
@@ -40,7 +40,6 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
   - source devel/setup.bash
 script: 
   # - catkin_make run_tests_rospy_utils
-  
   - pwd
   - cd src/rospy_utils
   - nosetests -v # --with-coverage --cover-package=rospy_utils
