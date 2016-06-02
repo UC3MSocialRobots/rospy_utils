@@ -39,10 +39,8 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
   - catkin_make
   - source devel/setup.bash
 script: 
-  # - cd ~/ros/catkin_ws/src/rospy_utils
-  # - cd ~/ros/catkin_ws/
-  - catkin_make run_tests_rospy_utils
-  # - cd ~/ros/catkin_ws/src
+  # - catkin_make run_tests_rospy_utils
+  
   - pwd
   - cd src/rospy_utils
   - nosetests -v # --with-coverage --cover-package=rospy_utils
