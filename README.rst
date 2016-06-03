@@ -1,11 +1,11 @@
 rospy\_utils
 ============
 
-.. image:: https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master
+.. image:: https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=indigo-devel
     :target: https://travis-ci.org/UC3MSocialRobots/rospy_utils
 
-.. image:: https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master
-    :target: https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master
+.. image:: https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=indigo-devel
+    :target: https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=indigo-devel
 
 .. image:: https://readthedocs.org/projects/rospy-utils/badge/?version=latest
     :target: https://readthedocs.org/projects/rospy-utils/?badge=latest
@@ -59,11 +59,11 @@ distribute the sources.
 Quality Metrics
 ---------------
 
-.. image:: https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=master
+.. image:: https://travis-ci.org/UC3MSocialRobots/rospy_utils.svg?branch=indigo-devel
     :target: https://travis-ci.org/UC3MSocialRobots/rospy_utils
 
-.. image:: https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=master
-    :target: https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=master
+.. image:: https://coveralls.io/repos/UC3MSocialRobots/rospy_utils/badge.svg?branch=indigo-devel
+    :target: https://coveralls.io/r/UC3MSocialRobots/rospy_utils?branch=indigo-devel
 
 
 Code Quality Reviews:
@@ -72,12 +72,12 @@ Code Quality Reviews:
 I'm using different automatic code review tools since each one provides
 slightly different code checks.
 
-.. image:: https://landscape.io/github/UC3MSocialRobots/rospy_utils/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/UC3MSocialRobots/rospy_utils/master
+.. image:: https://landscape.io/github/UC3MSocialRobots/rospy_utils/indigo-devel/landscape.svg?style=flat
+    :target: https://landscape.io/github/UC3MSocialRobots/rospy_utils/indigo-devel
     :alt: Code Health
 
-.. image:: https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/badges/quality-score.png?b=master
-    :target: https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/?branch=master
+.. image:: https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/badges/quality-score.png?b=indigo-devel
+    :target: https://scrutinizer-ci.com/g/UC3MSocialRobots/rospy_utils/?branch=indigo-devel
     :alt: Scrutinizer Code Quality
 
 .. image:: https://codeclimate.com/github/UC3MSocialRobots/rospy_utils/badges/gpa.svg
