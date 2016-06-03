@@ -45,5 +45,6 @@ script:
   - coverage run --source=src/rospy_utils/ $(which nosetests)
   - coverage report --include=*rospy_utils* --omit=*src/test/*
 after_success:
+  - CODECLIMATE_REPO_TOKEN=88512c8f43b3407680983883b506f4a3c5d6a1f347fbc0dc9a8995a2a229c04b codeclimate-test-reporter 
   - coveralls   # Send coverage data to coveralls
   - ocular      # Send coverage data to scrutinizer-ci
