@@ -1,8 +1,10 @@
 languages:
-  Ruby: true
-  JavaScript: true
-  PHP: true
   Python: true
+engines:
+  radon: 
+    enabled: true
+    config: 
+      threshold: "C"
 exclude_paths:
 - src/test/test_coroutines.py
 - src/test/*
