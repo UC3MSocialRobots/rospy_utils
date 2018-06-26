@@ -44,4 +44,4 @@ def as_iter(obj):
         >>> as_iter('hello')
         ('hello',)
     """
-    return obj if hasattr(obj, '__iter__') else (obj,)
+    return obj if hasattr(obj, '__iter__') and type(obj) != type("") else (obj,)

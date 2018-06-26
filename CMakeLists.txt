@@ -87,9 +87,9 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-  include src ${catkin_INCLUDE_DIRS}
-)
+#include_directories(
+#  include src ${catkin_INCLUDE_DIRS}
+#)
 
 ## Declare a cpp library
 # add_library(foo
@@ -143,7 +143,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   PATTERN ".svn" EXCLUDE
   PATTERN "src" EXCLUDE

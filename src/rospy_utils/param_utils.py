@@ -46,6 +46,7 @@ class ParamNotFoundError(Exception):
 
 
 def __get_parameter(pname):
+    print("PARAMETER REQUESTED: ", pname)
     param_full_name = rospy.search_param(pname)
     if not param_full_name:
         raise ParamNotFoundError("'{}'".format(pname))
@@ -63,7 +64,9 @@ def get_parameters(parameters):
     :raises: ParamNotFoundError in case a parameter Error
     :raises: ValueError in case parameters is empty
     """
+    print("PARAMETER LIST: ", parameters)
     params = as_iter(parameters)
+    print("PARAMETER LIST (AFTER as_iter): ", params)
     for pname in params:
         try:
             yield __get_parameter(pname)
